@@ -89,7 +89,7 @@ const ContactUs = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-custom text-white py-3 rounded-lg font-medium hover:bg-custom/90"
+                  className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-custom/90"
                   disabled={loading}
                 >
                   {loading ? "Sending..." : "Send Message"}
