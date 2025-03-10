@@ -17,6 +17,7 @@ import About from "./compondents/About";
 import ServiceManagement from "./compondents/ServiceMangment";
 import Booking from "./compondents/Booking";
 import BookingStatus from "./compondents/BookingStatus";
+import Footer from "./compondents/Footer";
 function App() {
   return (
     <>
@@ -40,6 +41,7 @@ function App() {
 
 
         </Routes>
+        <Footer/>
       </div>
     </Router>
     </>

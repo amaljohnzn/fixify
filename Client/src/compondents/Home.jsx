@@ -4,23 +4,10 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
     // Fetch services from the backend
-    const fetchServices = async () => {
-      try {
-        const response = await fetch("https://your-api-url.com/api/services"); // Update with actual API URL
-        const data = await response.json();
-        setServices(data);
-      } catch (error) {
-        console.error("Error fetching services:", error);
-      }
-    };
-
-    fetchServices();
-  }, []);
-
+   
   const handleNavigate = () => {
-    navigate("/services");
+    navigate("/service");
   };
   const services = [
     {
