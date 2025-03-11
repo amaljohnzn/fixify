@@ -28,7 +28,28 @@ const ContactUs = () => {
   };
 
   return (
+    
     <main className="pt-0">
+       <section className="relative h-[500px] bg-gray-900">
+        <div className="absolute inset-0">
+          <img
+            src="https://res.cloudinary.com/dandjcp0x/image/upload/v1741665499/anthony-indraus-Bb9jWuTMPUk-unsplash_xitcxx.jpg" 
+            className="w-full h-full object-cover"
+            alt="Hero Image"
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-6 h-full flex items-center">
+          <div className="max-w-2xl">
+            <h1 className="text-5xl font-bold text-white mb-6">
+              Quality Home Services You Can Trust
+            </h1>
+            
+            <button className="rounded-lg bg-[#000000] text-white px-8 py-4 text-lg font-medium hover:bg-[#1e3a8a] transition">
+              Schedule Service Now
+            </button>
+          </div>
+        </div>
+      </section>
       <section className="pt-8 pb-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

@@ -203,33 +203,46 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
   if (user) {
-    res.json({
+    const userProfile = {
       _id: user.id,
       name: user.name,
       email: user.email,
       phone: user.phone,
       address: user.address,
       role: user.role,
-    });
+      registrationDate: user.createdAt, // Include registration date
+    };
+
+    // If the user is a service provider, add provider-specific details
+    if (user.role === "provider") {
+      userProfile.servicesOffered = user.servicesOffered || []; // Ensure array
+      userProfile.experience = user.experience || "";
+      userProfile.verificationStatus = user.verificationStatus || "Pending";
+    }
+
+    res.json(userProfile);
   } else {
     res.status(404);
     throw new Error("User not found");
   }
 });
 
+
 // Update user profile (Client, Provider, or Admin)
+
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
   if (user) {
     user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
     user.phone = req.body.phone || user.phone;
     user.address = req.body.address || user.address;
 
-    if (req.body.password) {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(req.body.password, salt);
+    // Update provider-specific fields
+    if (user.role === "provider") {
+      user.servicesOffered = req.body.servicesOffered || user.servicesOffered;
+      user.experience = req.body.experience || user.experience;
+      user.verificationStatus = req.body.verificationStatus || user.verificationStatus;
     }
 
     const updatedUser = await user.save();
@@ -241,12 +254,17 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       phone: updatedUser.phone,
       address: updatedUser.address,
       role: updatedUser.role,
+      registrationDate: updatedUser.createdAt,
+      servicesOffered: updatedUser.servicesOffered || [],
+      experience: updatedUser.experience || "",
+      verificationStatus: updatedUser.verificationStatus || "Pending",
     });
   } else {
     res.status(404);
     throw new Error("User not found");
   }
 });
+
 
 const updatePassword = asyncHandler(async (req, res) => {
   console.log("🔹 Password update request received");

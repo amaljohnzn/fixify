@@ -13,7 +13,6 @@ var cors = require('cors')
 // Connect to Database
 connectDB();
 
-
 // Middleware
 app.use(express.json());
 app.use(cookieParser());

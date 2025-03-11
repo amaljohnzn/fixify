@@ -32,6 +32,9 @@ const addService = asyncHandler(async (req, res) => {
     res.status(201).json(service);
 });
 
+
+
+
 // Update service by _id
 const updateService = asyncHandler(async (req, res) => {
     const { id } = req.params;

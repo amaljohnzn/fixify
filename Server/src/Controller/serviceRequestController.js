@@ -95,19 +95,19 @@ const acceptServiceRequest = asyncHandler(async (req, res) => {
 });
 
 
-// Get accepted requests for a provider
 const getAcceptedRequests = asyncHandler(async (req, res) => {
     const requests = await ServiceRequest.find({
         provider: req.user.id,
         status: "Accepted"
     })
-        .populate("client", "name phone location")
+        .populate("client", "name phone location") // Ensure 'phone' is populated
         .sort({ createdAt: -1 });
 
     const formattedRequests = requests.map(request => ({
         _id: request._id,
         client: request.client ? request.client._id : null,
         clientName: request.client ? request.client.name : null,
+        clientPhone: request.client ? request.client.phone : null,  // ✅ Include phone
         serviceName: request.serviceName,
         status: request.status,
         location: request.location,
@@ -117,7 +117,6 @@ const getAcceptedRequests = asyncHandler(async (req, res) => {
 
     res.json(formattedRequests);
 });
-
 
 //  Get client requests status
 const getClientRequests = asyncHandler(async (req, res) => {
@@ -288,6 +287,28 @@ const updateProviderRating = async (providerId) => {
         });
     }
 };
+const getPastBookingsForProvider = asyncHandler(async (req, res) => {
+    const pastJobs = await ServiceRequest.find({
+        provider: req.user.id,
+        status: "Paid" // Only show Paid bookings
+    })
+    .populate("client", "name phone location") // Populate client details
+    .sort({ createdAt: -1 });
+
+    const formattedJobs = pastJobs.map(job => ({
+        _id: job._id,
+        clientName: job.client ? job.client.name : "N/A",
+        clientPhone: job.client ? job.client.phone : "N/A",
+        serviceName: job.serviceName,
+        location: job.location,
+        status: job.status,
+        paymentStatus: job.paymentStatus || "Paid",
+        createdAt: job.createdAt
+    }));
+
+    res.json(formattedJobs); // ✅ Send response
+});
+
 
 
 module.exports = {
@@ -299,5 +320,6 @@ module.exports = {
     makePayment,
     viewBill,
     completeServiceRequest,
-    submitRating
+    submitRating,
+    getPastBookingsForProvider
 };

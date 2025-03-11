@@ -10,7 +10,7 @@ const About = () => {
   return (
     <main className="pt-20 font-[Poppins]">
       {/* Hero Section */}
-      <section className="relative h-[600px] bg-gray-900">
+      <section className="relative h-[500px] bg-gray-900">
         <div className="absolute inset-0">
           <img
             src="https://res.cloudinary.com/dandjcp0x/image/upload/v1741582921/f73dcfca-924f-439a-b80b-1e71f637bcda_vgygbq.jpg" 

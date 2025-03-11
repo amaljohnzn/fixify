@@ -6,7 +6,7 @@ const {
   getPendingRequests,
   acceptServiceRequest,
   getAcceptedRequests,
-  getClientRequests,makePayment,viewBill,completeServiceRequest,submitRating
+  getClientRequests,makePayment,viewBill,completeServiceRequest,submitRating,getPastBookingsForProvider
 } = require("../Controller/serviceRequestController");
 
 // Client creates a new service request
@@ -35,6 +35,7 @@ router.put("/:id/pay", protect, makePayment);
 
 // Client submits a rating after payment
 router.put("/:id/rate", protect, submitRating);
+router.get("/past-jobs", protect, getPastBookingsForProvider);
 
 
 module.exports = router;

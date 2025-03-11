@@ -18,6 +18,8 @@ import ServiceManagement from "./compondents/ServiceMangment";
 import Booking from "./compondents/Booking";
 import BookingStatus from "./compondents/BookingStatus";
 import Footer from "./compondents/Footer";
+import ProviderBookings from "./compondents/ProviderBookings";
+import Works from "./compondents/Works";
 function App() {
   return (
     <>
@@ -38,6 +40,10 @@ function App() {
           <Route path="/servicemgnt" element={<ServiceManagement />} />
           <Route path="/booking" element={<Booking/>} />
           <Route path="/bookingStatus" element={<BookingStatus/>} />
+          <Route path="/providerBooking" element={<ProviderBookings/>} />
+          <Route path="/works" element={<Works/>} />
+
+
 
 
         </Routes>

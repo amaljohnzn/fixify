@@ -28,6 +28,9 @@ const Navbar = () => {
               <Link to="/signup" className="text-black font-medium no-underline hover:text-gray-600">Sign Up</Link>
               <Link to="/servicemgnt" className="text-black font-medium no-underline hover:text-gray-600">ServiceManage</Link>
               <Link to="/bookingStatus" className="text-black font-medium  hover:text-gray-600">BookingStatus</Link>
+              <Link to="/providerBooking" className="text-black font-medium  hover:text-gray-600">ProviderBooking</Link>
+              <Link to="/works" className="text-black font-medium  hover:text-gray-600">works</Link>
+
 
 
 
