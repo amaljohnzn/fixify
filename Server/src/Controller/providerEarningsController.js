@@ -10,6 +10,7 @@ const getProviderEarnings = asyncHandler(async (req, res) => {
 
     let totalEarnings = 0;
     
+    
     let balance = 0;
     let earningsPerService = {};
 
@@ -23,6 +24,7 @@ const getProviderEarnings = asyncHandler(async (req, res) => {
         }
     });
 
+    
     const formattedEarningsPerService = Object.keys(earningsPerService).map(service => ({
         serviceName: service,
         earnings: earningsPerService[service]

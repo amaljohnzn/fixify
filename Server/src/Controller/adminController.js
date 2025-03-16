@@ -11,42 +11,79 @@ const getAllProviders = asyncHandler(async (req, res) => {
   res.json(providers);
 });
 
-//  Approve or Reject provider verification
 const verifyProvider = asyncHandler(async (req, res) => {
-  const { providerId, status } = req.body;
+    console.log("🔹 Received request:", req.body);
+  
+    const { providerId, status } = req.body;
+    if (!providerId || !status) {
+      console.error("❌ Missing providerId or status");
+      return res.status(400).json({ message: "ProviderId and status are required" });
+    }
+  
+    if (!["Approved", "Rejected"].includes(status)) {
+      console.error("❌ Invalid status:", status);
+      return res.status(400).json({ message: "Invalid status. Must be 'Approved' or 'Rejected'." });
+    }
+  
+    try {
+      const provider = await User.findById(providerId);
+      if (!provider || provider.role !== "provider") {
+        console.error("❌ Provider not found:", providerId);
+        return res.status(404).json({ message: "Provider not found." });
+      }
+  
+      console.log(`✅ Updating provider ${providerId} to status: ${status}`);
+      provider.verificationStatus = status;
+  
+      // ✅ Fix: Validate only modified fields
+      await provider.save({ validateModifiedOnly: true });
+  
+      console.log(`✅ Provider ${providerId} updated successfully`);
+      res.json({ message: `Provider verification updated to ${status}` });
+    } catch (error) {
+      console.error("❌ Error updating provider verification:", error);
+      res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+  });
+  
 
-  if (!["Approved", "Rejected"].includes(status)) {
-    res.status(400);
-    throw new Error("Invalid status. Must be 'Approved' or 'Rejected'.");
-  }
-
-  const provider = await User.findById(providerId);
-  if (!provider || provider.role !== "provider") {
-    res.status(404);
-    throw new Error("Provider not found.");
-  }
-
-  provider.verificationStatus = status;
-  await provider.save();
-
-  res.json({ message: `Provider verification updated to ${status}` });
-});
-
-
-//  Get all service bookings 
-const getAllBookings = asyncHandler(async (req, res) => {
-  const bookings = await ServiceRequest.find().populate("provider", "name phone").populate("client", "name");
-  res.json(bookings);
-});
-
-//  Get only pending service requests
-const getPendingBookings = asyncHandler(async (req, res) => {
-  const pendingBookings = await ServiceRequest.find({ status: "Pending" })
-    .populate("provider", "name phone")
-    .populate("client", "name");
-
-  res.json(pendingBookings);
-});
+  const getAllBookings = asyncHandler(async (req, res) => {
+    try {
+      const { status } = req.query;
+      console.log("🔹 Received filter status:", status);
+  
+      let filter = {};
+      if (status && status !== "all") {
+        filter.status = status.charAt(0).toUpperCase() + status.slice(1); // Capitalize first letter
+      }
+  
+      console.log("🛠 Applying filter:", filter);
+  
+      const bookings = await ServiceRequest.find(filter)
+        .populate("provider", "name phone")
+        .populate("client", "name");
+  
+      console.log("✅ Fetched bookings count:", bookings.length);
+      res.json({ success: true, bookings });
+    } catch (error) {
+      console.error("❌ Error fetching bookings:", error);
+      res.status(500).json({ success: false, message: "Error fetching bookings" });
+    }
+  });
+  
+  
+  const getPendingBookings = asyncHandler(async (req, res) => {
+    try {
+      const pendingBookings = await ServiceRequest.find({ status: "Pending" })
+        .populate("provider", "name phone")
+        .populate("client", "name");
+  
+      res.json({ success: true, bookings: pendingBookings });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Error fetching pending bookings" });
+    }
+  });
+  
 
 //admin earnins
 const getAdminEarnings = asyncHandler(async (req, res) => {
@@ -223,4 +260,5 @@ const getAdminReport = asyncHandler(async (req, res) => {
 
 
 module.exports = { getAllProviders, verifyProvider, getAllBookings, getPendingBookings, getAdminEarnings ,getAdminReport};
+
 

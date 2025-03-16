@@ -16,6 +16,7 @@ router.post("/register", upload.array("documents", 5), registerProvider);
 router.get("/profile", protect, getUserProfile);
 router.put("/profile", protect, updateUserProfile);
 //router.put("/profile/password", protect, updatePassword);
+
 module.exports = router;
 
 

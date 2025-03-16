@@ -1,24 +1,135 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function Report() {
+const Report = () => {
+  const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchReport = async () => {
+      try {
+        const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URI}/admin/report`, {
+          withCredentials: true,
+        });
+        console.log("Fetched Report Data:", data); // Debugging
+        setReport(data);
+      } catch (err) {
+        console.error("Error fetching report:", err);
+        setError("Failed to fetch report");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReport();
+  }, []);
+
+  if (loading) return <p className="text-center text-gray-500 text-lg font-medium animate-pulse">Loading...</p>;
+  if (error) return <p className="text-center text-red-600 text-lg font-medium">{error}</p>;
+
   return (
-    <div>
-      
-    {/* Hero Section */}
-    <section className="relative h-[500px] overflow-hidden">
-      <img
-        src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-        alt="Hero"
-        className="w-full h-full object-cover object-center"
-      />
-      <div className="absolute inset-0 bg-black/50"></div>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white">
-          <h1 className="text-5xl font-bold mb-6">Welcome to Service Management</h1>
-          <p className="text-xl mb-8">Add, update, or remove services from your platform</p>
-        </div>
+    <div className="p-10 max-w-7xl mx-auto bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+      <h1 className="text-4xl font-bold text-gray-900 text-center mb-12 tracking-tight">
+        Admin Report Dashboard
+      </h1>
+
+      {/* Overview Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {[
+          { label: "Total Users", value: report.totalUsers },
+          { label: "Total Providers", value: report.totalProviders },
+          { label: "Total Services", value: report.totalServices },
+          { label: "Total Revenue", value: `₹${report.totalRevenue.toFixed(2)}` },
+          { label: "Total Commission", value: `₹${report.totalCommission.toFixed(2)}` },
+          { label: "New Users This Month", value: report.newUsersThisMonth },
+        ].map((item, index) => (
+          <div
+            key={index}
+            className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">{item.label}</h2>
+            <p className="text-3xl font-extrabold text-gray-900 mt-3">{item.value}</p>
+          </div>
+        ))}
       </div>
-    </section>
+
+      {/* Top Providers Table */}
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Top Providers</h2>
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-12 overflow-hidden">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-sm font-semibold uppercase tracking-wider">
+              <th className="py-4 px-6">Name</th>
+              <th className="py-4 px-6">Total Earnings</th>
+            </tr>
+          </thead>
+          <tbody>
+            {report.topProviders.map((provider) => (
+              <tr
+                key={provider._id}
+                className="border-t border-gray-100 hover:bg-gray-50 transition-colors duration-150"
+              >
+                <td className="py-4 px-6 text-gray-800">{provider.name}</td>
+                <td className="py-4 px-6 text-gray-800 font-medium">₹{provider.totalEarnings.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Top Services */}
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Most Requested Services</h2>
+      <ul className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-12">
+        {report.topServices.map((service) => (
+          <li
+            key={service._id}
+            className="py-4 text-gray-800 border-b border-gray-100 last:border-none flex justify-between items-center"
+          >
+            <span className="font-medium">{service._id}</span>
+            <span className="text-sm font-semibold text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+              {service.count} requests
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {/* Overall Rating */}
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Average Provider Rating</h2>
+      <p className="text-4xl font-extrabold text-gray-900 mb-12 flex items-center justify-center">
+        <span className="text-yellow-500 mr-2">⭐</span> {report.avgRating}
+      </p>
+
+      {/* Provider Ratings Table */}
+      {report.providerRatings && report.providerRatings.length > 0 && (
+        <>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Provider Ratings</h2>
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-sm font-semibold uppercase tracking-wider">
+                  <th className="py-4 px-6">Name</th>
+                  <th className="py-4 px-6">Average Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                {report.providerRatings.map((provider) => (
+                  <tr
+                    key={provider._id}
+                    className="border-t border-gray-100 hover:bg-gray-50 transition-colors duration-150"
+                  >
+                    <td className="py-4 px-6 text-gray-800">{provider.name}</td>
+                    <td className="py-4 px-6 text-gray-800 font-medium">
+                      <span className="text-yellow-500 mr-1">⭐</span> {provider.avgRating}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
+
+export default Report;

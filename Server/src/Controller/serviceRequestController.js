@@ -1,7 +1,16 @@
+//const Stripe = require("stripe");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const asyncHandler = require("express-async-handler");
+const dotenv = require("dotenv");
 const ServiceRequest = require("../Models/serviceRequest");
 const User = require("../Models/serviceModel");
 const ProviderEarnings = require("../Models/providerEarnings");
+
+dotenv.config();
+//const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("Stripe secret key is not configured in environment variables");
+  }
 
 // Create a new service request
 const createServiceRequest = asyncHandler(async (req, res) => {
@@ -127,6 +136,7 @@ const getClientRequests = asyncHandler(async (req, res) => {
     res.json(requests);
 });
 
+
 // Mark service request as completed with charges
 const completeServiceRequest = asyncHandler(async (req, res) => {
     const labourCharge = Number(req.body.labourCharge) || 0;
@@ -190,35 +200,61 @@ const viewBill = asyncHandler(async (req, res) => {
         paymentStatus: serviceRequest.paymentStatus
     });
 });
-
-// Make a payment 
-const makePayment = asyncHandler(async (req, res) => {
+const createPaymentIntent = asyncHandler(async (req, res) => {
+    const { amount } = req.body;
     const serviceRequest = await ServiceRequest.findById(req.params.id);
 
     if (!serviceRequest) {
-        res.status(404);
-        throw new Error("Service request not found");
+        return res.status(404).json({ message: "Service request not found" });
     }
 
     if (serviceRequest.status !== "Completed") {
-        res.status(400);
-        throw new Error("Service must be completed before payment");
+        return res.status(400).json({ message: "Service must be completed before payment" });
     }
-
-    if (serviceRequest.status === "Paid") {
-        res.status(400);
-        throw new Error("This service has already been paid for");
-    }
-
-    const commissionAmount = serviceRequest.totalAmount * 0.1;
-    const providerEarningsAmount = serviceRequest.totalAmount * 0.9;
-
-    serviceRequest.status = "Paid";
-    serviceRequest.paymentStatus = "Paid";
 
     try {
+        // Create a PaymentIntent in Stripe
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount * 100, // Stripe uses cents
+            currency: "usd", // Change to your currency
+            metadata: { serviceRequestId: serviceRequest._id.toString() },
+        });
+
+        res.json({ clientSecret: paymentIntent.client_secret });
+    } catch (error) {
+        console.error("Error creating payment intent:", error);
+        res.status(500).json({ message: "Failed to create payment intent" });
+    }
+});
+// confirm payment
+const confirmPayment = asyncHandler(async (req, res) => {
+    const serviceRequest = await ServiceRequest.findById(req.params.id);
+
+    if (!serviceRequest) {
+        return res.status(404).json({ message: "Service request not found" });
+    }
+
+    if (serviceRequest.status !== "Completed") {
+        return res.status(400).json({ message: "Service must be completed before payment" });
+    }
+
+    if (serviceRequest.paymentStatus === "Paid") {
+        return res.status(400).json({ message: "This service has already been paid for" });
+    }
+
+    try {
+        // Calculate commission and provider earnings
+        const commissionAmount = serviceRequest.totalAmount * 0.1;  // 10% to Fixify
+        const providerEarningsAmount = serviceRequest.totalAmount * 0.9;  // 90% to Provider
+
+        // Update service request status
+        serviceRequest.status = "Paid";
+        serviceRequest.paymentStatus = "Paid";
+        serviceRequest.paymentId = req.body.paymentId;
+
         await serviceRequest.save();
 
+        // Save provider earnings record
         await ProviderEarnings.create({
             provider: serviceRequest.provider,
             serviceRequest: serviceRequest._id,
@@ -229,10 +265,12 @@ const makePayment = asyncHandler(async (req, res) => {
             balance: providerEarningsAmount
         });
 
+        console.log("Updated Service Request & Provider Earnings:", serviceRequest);
+
         res.json({ message: "Payment successful", serviceRequest });
     } catch (error) {
         console.error("Error processing payment:", error);
-        res.status(500).json({ message: "Failed to process payment", error });
+        res.status(500).json({ message: "Failed to process payment" });
     }
 });
 
@@ -317,9 +355,9 @@ module.exports = {
     acceptServiceRequest,
     getAcceptedRequests,
     getClientRequests,
-    makePayment,
+    confirmPayment,
     viewBill,
     completeServiceRequest,
     submitRating,
-    getPastBookingsForProvider
+    getPastBookingsForProvider,createPaymentIntent
 };

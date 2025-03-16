@@ -12,13 +12,19 @@ const ServiceRequestSchema = new mongoose.Schema({
   labourCharge: { type: Number, default: 0 }, 
   partsCharge: { type: Number, default: 0 },
   totalAmount: { type: Number, default: 0 },
-  paymentStatus: { type: String, enum: ["Pending", "Paid"], default: "Pending" },
+  paymentStatus: { 
+    type: String, 
+    enum: ["Pending", "Paid", "Failed"], // Add "Failed" to the enum
+    default: "Pending" 
+  },
+  
+
   rating: { type: Number, min: 1, max: 5, default: null },
 
   createdAt: { type: Date, default: Date.now },
   providerEarnings: { type: Number, default: 0 }, 
-  commission: { type: Number, default: 0 }
-
+  commission: { type: Number, default: 0 },
+  paymentId: { type: String, default: null },
 });
 
 module.exports = mongoose.model("ServiceRequest", ServiceRequestSchema);

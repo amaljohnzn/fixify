@@ -19,6 +19,7 @@ router.get("/pending-bookings", protect, admin, getPendingBookings);
 // Get earnings info
 router.get("/earning", protect, admin,getAdminEarnings );
 
+
 // Admin Report Route (Only accessible by Admin)
 router.get("/report", protect, admin, getAdminReport);
 

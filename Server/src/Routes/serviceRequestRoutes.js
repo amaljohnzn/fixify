@@ -6,7 +6,7 @@ const {
   getPendingRequests,
   acceptServiceRequest,
   getAcceptedRequests,
-  getClientRequests,makePayment,viewBill,completeServiceRequest,submitRating,getPastBookingsForProvider
+  getClientRequests,confirmPayment,viewBill,completeServiceRequest,submitRating,getPastBookingsForProvider,createPaymentIntent
 } = require("../Controller/serviceRequestController");
 
 // Client creates a new service request
@@ -27,15 +27,19 @@ router.get("/myRequest", protect, getClientRequests)
 // Provider marks as completed
 router.put("/:id/complete", protect, provider, completeServiceRequest); 
 
+
 // Client views bill
 router.get("/:id/bill", protect, viewBill); 
 
 // Client makes payment
-router.put("/:id/pay", protect, makePayment); 
+router.put("/:id/pay", protect, confirmPayment); 
+router.post("/:id/create-payment-intent", createPaymentIntent);
 
 // Client submits a rating after payment
-router.put("/:id/rate", protect, submitRating);
+router.post("/:id/rate", protect, submitRating);
 router.get("/past-jobs", protect, getPastBookingsForProvider);
+
+
 
 
 module.exports = router;
