@@ -49,6 +49,7 @@ const BookingPage = () => {
     
     
     <>
+    
     <br />
     <div className="max-w-lg mx-auto p-28 bg-white rounded-lg shadow mt-20">
       <h2 className="text-2xl font-bold mb-2">Service : {serviceName}</h2>

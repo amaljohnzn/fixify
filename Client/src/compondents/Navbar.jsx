@@ -26,10 +26,19 @@ const Navbar = () => {
               <Link to="/contact" className="text-black font-medium no-underline hover:text-gray-600">Contact</Link>
               <Link to="/signin" className="text-black font-medium no-underline hover:text-gray-600">Sign In</Link>
               <Link to="/signup" className="text-black font-medium no-underline hover:text-gray-600">Sign Up</Link>
-              <Link to="/servicemgnt" className="text-black font-medium no-underline hover:text-gray-600">ServiceManage</Link>
+              <Link to="/servicemgnt" className="text-black font-medium no-underline hover:text-gray-600">Service Manage</Link>
               <Link to="/bookingStatus" className="text-black font-medium  hover:text-gray-600">BookingStatus</Link>
-              <Link to="/providerBooking" className="text-black font-medium  hover:text-gray-600">ProviderBooking</Link>
+              <Link to="/providerBooking" className="text-black font-medium  hover:text-gray-600">Provider Booking</Link>
               <Link to="/works" className="text-black font-medium  hover:text-gray-600">works</Link>
+              <Link to="/earnings" className="text-black font-medium  hover:text-gray-600">Earnings</Link>
+              <Link to="/providers" className="text-black font-medium  hover:text-gray-600">Providers</Link>
+              <Link to="/report" className="text-black font-medium  hover:text-gray-600">Report</Link>
+              <Link to="/revenue" className="text-black font-medium  hover:text-gray-600">Revenue</Link>
+              <Link to="/bookingList" className="text-black font-medium  hover:text-gray-600">Booking List</Link>
+
+
+
+
 
 
 

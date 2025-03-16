@@ -20,13 +20,21 @@ import BookingStatus from "./compondents/BookingStatus";
 import Footer from "./compondents/Footer";
 import ProviderBookings from "./compondents/ProviderBookings";
 import Works from "./compondents/Works";
+import Earnings from "./compondents/Earnings";
+import Payment from "./compondents/Payment";
+import Providers from "./compondents/Providers"
+import Revenue from "./compondents/Revenue";
+import Report from "./compondents/Report";
+import BookingList from "./compondents/BookingList"
+
 function App() {
   return (
     <>
     <Router>
-      <div className="min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen">
      <Navbar/> 
-        <Routes>
+     <main>
+     <Routes>
           <Route path="/signup" element={<ChooseRegister />} />
           <Route path="/clientRegister" element={<ClientRegister/>} />
           <Route path="/providerRegister" element={<ProviderRegister />} />
@@ -42,11 +50,19 @@ function App() {
           <Route path="/bookingStatus" element={<BookingStatus/>} />
           <Route path="/providerBooking" element={<ProviderBookings/>} />
           <Route path="/works" element={<Works/>} />
+          <Route path="/earnings" element={<Earnings/>} />
+          <Route path="/payment" element={<Payment/>} />
+          <Route path="/report" element={<Report/>} />
+          <Route path="/bookingList" element={<BookingList/>} />
+          <Route path="/revenue" element={<Revenue/>} />
+          <Route path="/providers" element={<Providers/>} />
 
 
 
 
         </Routes>
+     </main>
+        
         <Footer/>
       </div>
     </Router>
