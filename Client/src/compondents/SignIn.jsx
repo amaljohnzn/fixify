@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion"; // Import Framer Motion
+import FixifyLogo from "./img/logo.png"
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const API_BASE_URL = import.meta.env.VITE_SERVER_URI; 
+  const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_SERVER_URI;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,13 +19,15 @@ export default function SignIn() {
 
     try {
       const { data } = await axios.post(
-        `${API_BASE_URL}/users/login`, // Uses .env API URL
+        `${API_BASE_URL}/users/login`, 
         { email, password },
-        { withCredentials: true } // Send cookies with request
+        { withCredentials: true }
       );
 
-      alert("Login Successful!"); // Replace with actual redirection logic
       console.log(data);
+      
+        navigate("/");
+      
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong!");
     } finally {
@@ -37,18 +42,21 @@ export default function SignIn() {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')",
-          filter: "blur(4px)",
+            "url('https://res.cloudinary.com/dandjcp0x/image/upload/v1742378862/jeshoots-com-9n1USijYJZ4-unsplash_eg3sfc.jpg')",
         }}
       ></div>
-
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black opacity-40"></div>
+      <div className="absolute inset-0 backdrop-blur-sm bg-black/40"></div>
 
-      {/* Sign-In Form */}
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10">
+      {/* Animated Sign-In Form */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }} // Start hidden and below
+        animate={{ opacity: 1, y: 0 }} // Fade in and move up
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10"
+      >
         <div className="text-center">
-          <span className="text-2xl font-[Pacifico] text-black">Fixify</span>
+          <span className="text-2xl font-[Pacifico] text-black"> <img src={FixifyLogo} alt="Fixify Logo" className="mx-auto w-20 h-20" /></span>
           <h2 className="mt-4 text-3xl font-extrabold text-gray-900">Sign In</h2>
           <p className="mt-2 text-sm text-gray-600">Log in to your account</p>
         </div>
@@ -81,15 +89,22 @@ export default function SignIn() {
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          <button
+          {/* Animated Button */}
+          <motion.button
             type="submit"
             disabled={loading}
-            className="w-full mt-4 py-2 px-4 border border-transparent rounded-md shadow-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full mt-4 py-2 px-4 border border-transparent rounded-md shadow-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black flex items-center justify-center"
           >
-            {loading ? "Signing In..." : "Sign In"}
-          </button>
+            {loading ? (
+              <span className="animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full"></span>
+            ) : (
+              "Sign In"
+            )}
+          </motion.button>
         </form>
-      </div>
+      </motion.div>
     </main>
   );
 }

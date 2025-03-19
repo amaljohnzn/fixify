@@ -13,17 +13,17 @@ const About = () => {
       <section className="relative h-[500px] bg-gray-900">
         <div className="absolute inset-0">
           <img
-            src="https://res.cloudinary.com/dandjcp0x/image/upload/v1741582921/f73dcfca-924f-439a-b80b-1e71f637bcda_vgygbq.jpg" 
+            src="https://res.cloudinary.com/dandjcp0x/image/upload/v1742356808/8db36e8c-57e5-4a94-9959-459879e9d964_1_vhgj4r.jpg" 
             className="w-full h-full object-cover"
             alt="Hero Image"
           />
         </div>
         <div className="relative max-w-7xl mx-auto px-6 h-full flex items-center">
           <div className="max-w-2xl">
-            <h1 className="text-5xl font-bold text-black mb-6">
+            <h1 className="text-5xl font-bold text-white mb-6">
               Quality Home Services You Can Trust
             </h1>
-            <p className="text-xl text-black-200 mb-8">
+            <p className="text-xl text-white-200 mb-8">
               Your trusted partner in home maintenance and repairs since 2010.
               Professional, reliable, and fully insured services.
             </p>
@@ -64,7 +64,7 @@ const About = () => {
           <div>
             {/* Leave space for image */}
             <img
-              src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e"
+              src="https://res.cloudinary.com/dandjcp0x/image/upload/v1742356808/a921898d-3c48-4b65-986a-832326dd1098_1_qrgrdg.jpg"
               className="rounded-lg shadow-lg"
               alt="Our Team"
             />
@@ -108,7 +108,7 @@ const About = () => {
 </section>
 
 
-      {/* About Servat */}
+      {/* About  */}
       <section className="py-6 bg-gray-50 text-center">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-3xl font-bold mb-6">About Fixify</h2>
@@ -168,7 +168,7 @@ const About = () => {
             <p className="text-sm text-gray-600">Expanded services to cover entire metropolitan area</p>
           </div>
         </div>
-        <div className="flex justify-center col-span-2 mt-2">
+        <div className="flex justify-center col-span-2 mb-5">
           <div className="w-3 h-3 bg-black rounded-full"></div> {/* Adjusted dot size to match image */}
         </div>
       </div>
@@ -187,7 +187,7 @@ const About = () => {
             <p className="text-sm text-gray-600">Launched digital booking platform</p>
           </div>
         </div>
-        <div className="flex justify-center col-span-2 mt-2">
+        <div className="flex justify-center col-span-2 mb-12">
           <div className="w-3 h-3 bg-black rounded-full"></div> {/* Adjusted dot size to match image */}
         </div>
       </div>

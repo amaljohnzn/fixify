@@ -28,7 +28,27 @@ const Report = () => {
   if (error) return <p className="text-center text-red-600 text-lg font-medium">{error}</p>;
 
   return (
+    <>
+     {/* Hero Section */}
+     <section className="relative h-[500px] overflow-hidden">
+      <img
+        src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1920&amp;q=80"
+
+          
+        alt="Hero"
+        className="w-full h-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-center text-white">
+          <h1 className="text-5xl font-bold mb-6">Report & Analiysis</h1>
+        </div>
+      </div>
+    </section>
+
+
     <div className="p-10 max-w-7xl mx-auto bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+      
       <h1 className="text-4xl font-bold text-gray-900 text-center mb-12 tracking-tight">
         Admin Report Dashboard
       </h1>
@@ -129,6 +149,8 @@ const Report = () => {
         </>
       )}
     </div>
+    </>
+  
   );
 };
 

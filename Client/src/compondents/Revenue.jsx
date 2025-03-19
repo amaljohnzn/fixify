@@ -42,7 +42,7 @@ const Revenue = () => {
     {/* Hero Section */}
 <section className="relative h-[500px] overflow-hidden">
   <img
-    src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+    src="https://res.cloudinary.com/dandjcp0x/image/upload/v1742313367/alexander-grey-8lnbXtxFGZw-unsplash_fvyfcd.jpg"
     alt="Hero"
     className="w-full h-full object-cover object-center"
   />
@@ -52,7 +52,7 @@ const Revenue = () => {
   {/* Centered Heading */}
   <div className="absolute inset-0 flex items-center justify-center">
     <h1 className="text-4xl md:text-5xl font-bold text-white text-center drop-shadow-lg">
-      Welcome to Service Management
+      Welcome to Fixify Revenue Section
     </h1>
   </div>
 </section>

@@ -57,29 +57,48 @@ const Earnings = () => {
     };
 
     return (
-        <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+        <>
+         {/* Hero Section */}
+    <section className="relative h-[400px] overflow-hidden">
+      <img
+        src="https://images.unsplash.com/photo-1580048915913-4f8f5cb481c4"
+        alt="Hero"
+        className="w-full h-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-center text-white">
+          <h1 className="text-5xl font-bold mb-6">Welcome to Your Earnings</h1>
+          <p className="text-xl mb-8">check and Withdraw Your Earnings</p>
+        </div>
+      </div>
+    </section>
+
+
+    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8 mb-6">
             <h2 className="text-2xl font-bold mb-4">Earnings Dashboard</h2>
 
             {error && <p className="text-red-500">{error}</p>}
             {message && <p className="text-green-500">{message}</p>}
 
             <div className="mb-4">
-                <p className="text-lg"><strong>Total Earnings:</strong> ₹{earnings.totalEarnings}</p>
-                <p className="text-lg"><strong>Available Balance:</strong> ₹{earnings.balance}</p>
-            </div>
+    <p className="text-lg"><strong>Total Earnings:</strong> ₹{earnings.totalEarnings.toFixed(2)}</p>
+    <p className="text-lg"><strong>Available Balance:</strong> ₹{earnings.balance.toFixed(2)}</p>
+</div>
 
-            <h3 className="text-xl font-semibold mt-4 mb-2">Earnings Per Service</h3>
-            <ul className="list-disc pl-6 mb-4">
-                {earnings.earningsPerService.length > 0 ? (
-                    earnings.earningsPerService.map((service, index) => (
-                        <li key={index}>
-                            {service.serviceName}: ₹{service.earnings}
-                        </li>
-                    ))
-                ) : (
-                    <p>No earnings yet.</p>
-                )}
-            </ul>
+<h3 className="text-xl font-semibold mt-4 mb-2">Earnings Per Service</h3>
+<ul className="list-disc pl-6 mb-4">
+    {earnings.earningsPerService.length > 0 ? (
+        earnings.earningsPerService.map((service, index) => (
+            <li key={index}>
+                {service.serviceName}: ₹{service.earnings.toFixed(2)}
+            </li>
+        ))
+    ) : (
+        <p>No earnings yet.</p>
+    )}
+</ul>
+
 
             <form onSubmit={handleWithdraw} className="mt-6">
                 <label className="block text-lg font-medium mb-1">Withdraw Amount (₹):</label>
@@ -97,6 +116,8 @@ const Earnings = () => {
                 </button>
             </form>
         </div>
+        </>
+        
     );
 };
 

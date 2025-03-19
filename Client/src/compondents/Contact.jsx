@@ -20,6 +20,8 @@ const ContactUs = () => {
       await axios.post(`${API_URL}/contact`, formData);
       setSuccess("Your message has been sent successfully!");
       setFormData({ name: "", email: "", phone: "", message: "" });
+      window.alert("Message sent successfully!");
+
     } catch (error) {
       setSuccess("Failed to send message. Try again later.");
     } finally {

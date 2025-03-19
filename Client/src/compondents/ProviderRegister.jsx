@@ -1,38 +1,72 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import FixifyLogo from "./img/logo.png"
+
+const API_URL = import.meta.env.VITE_SERVER_URI;
 
 export default function RegisterProvider() {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm();
   const [message, setMessage] = useState("");
+  const [services, setServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/service`, { withCredentials: true })
+      .then((response) => {
+        setServices(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching services:", error);
+      });
+  }, []);
+
+  const handleServiceSelect = (serviceName) => {
+    let updatedServices = selectedServices.includes(serviceName)
+      ? selectedServices.filter((s) => s !== serviceName)
+      : [...selectedServices, serviceName];
+
+    setSelectedServices(updatedServices);
+    setValue("servicesOffered", updatedServices);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".service-dropdown")) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   const onSubmit = async (data) => {
     const formData = new FormData();
-    
     Object.keys(data).forEach((key) => {
       if (key === "documents") {
         for (let i = 0; i < data[key].length; i++) {
           formData.append("documents", data[key][i]);
         }
       } else if (key === "servicesOffered") {
-        formData.append(key, JSON.stringify([data[key]]));
+        formData.append(key, JSON.stringify(selectedServices));
       } else {
         formData.append(key, data[key]);
       }
     });
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URI}/users/register`, formData, {
+      const response = await axios.post(`${API_URL}/users/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
       });
       setMessage(response.data.message);
       reset();
-
-      // Redirect to another page (e.g., login or dashboard)
       setTimeout(() => {
-        navigate("/login");
+        navigate("/signIn");
       }, 2000);
     } catch (error) {
       setMessage(error.response?.data?.message || "Registration failed");
@@ -40,15 +74,18 @@ export default function RegisterProvider() {
   };
 
   return (
-    <main className="pt-20 min-h-screen flex items-center justify-center bg-gray-50 relative" style={{
-      backgroundImage: "url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')",
-      backgroundSize: "cover",
-      backgroundPosition: "center"
-    }}>
+    <main
+      className="pt-20 min-h-screen flex items-center justify-center bg-gray-50 relative "
+      style={{
+        backgroundImage: `url('https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&q=80')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="max-w-3xl w-full space-y-8 bg-white p-8 rounded-lg shadow-sm relative z-10">
         <div className="text-center">
-          <span className="text-2xl font-[Pacifico] text-custom">Fixify</span>
+          <img src={FixifyLogo} alt="Fixify Logo" className="mx-auto w-20 h-20" />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Service Provider Sign Up</h2>
           <p className="mt-2 text-sm text-gray-600">Join our professional service provider network</p>
         </div>
@@ -75,20 +112,58 @@ export default function RegisterProvider() {
               <label className="block text-sm font-medium text-gray-700">Address</label>
               <input {...register("address")} className="w-full mt-1 p-2 border rounded" required />
             </div>
-            <div>
+
+            {/* Services Offered - Dropdown */}
+            <div className="md:col-span-2 relative service-dropdown">
               <label className="block text-sm font-medium text-gray-700">Services Offered</label>
-              <input {...register("servicesOffered")} className="w-full mt-1 p-2 border rounded" required />
+              <div className="relative mt-1">
+                <button
+                  type="button"
+                  className="w-full p-2 border rounded bg-gray-100 text-gray-700"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDropdownOpen(!dropdownOpen);
+                  }}
+                >
+                  {selectedServices.length > 0 ? selectedServices.join(", ") : "Select Services"}
+                </button>
+                {dropdownOpen && (
+                  <div className="absolute mt-1 w-full bg-white border rounded shadow-md max-h-40 overflow-auto">
+                    {services.length > 0 ? (
+                      services.map((service, index) => (
+                        <label key={index} className="block px-4 py-2 cursor-pointer hover:bg-gray-100">
+                          <input
+                            type="checkbox"
+                            value={service.name}
+                            checked={selectedServices.includes(service.name)}
+                            onChange={() => handleServiceSelect(service.name)}
+                            className="mr-2"
+                          />
+                          {service.name}
+                        </label>
+                      ))
+                    ) : (
+                      <p className="text-gray-500 p-2">Loading services...</p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
               <input {...register("experience")} type="number" className="w-full mt-1 p-2 border rounded" required />
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700">Verification Documents</label>
               <input {...register("documents")} type="file" multiple className="w-full mt-1 p-2 border rounded" required />
             </div>
           </div>
-          <button type="submit" className="w-full bg-black text-white py-2 rounded">Register as Service Provider</button>
+
+          <button type="submit" className="w-full bg-black text-white py-2 rounded">
+            Register as Service Provider
+          </button>
         </form>
       </div>
     </main>

@@ -5,134 +5,247 @@ import { toast } from "react-toastify";
 const API_URL = import.meta.env.VITE_SERVER_URI;
 
 const Works = () => {
-    const [requests, setRequests] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [completing, setCompleting] = useState(false);
-    const [charges, setCharges] = useState({});
+  const [acceptedRequests, setAcceptedRequests] = useState([]);
+  const [completedRequests, setCompletedRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [completing, setCompleting] = useState(false);
+  const [charges, setCharges] = useState({});
+  const [showReceipt, setShowReceipt] = useState(null);
 
-    // Axios global settings to send credentials
-    axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true;
 
-    // Fetch accepted requests
-    useEffect(() => {
-        const fetchRequests = async () => {
-            try {
-                const { data } = await axios.get(`${API_URL}/request/accepted`, {
-                    withCredentials: true, // Ensures cookies/tokens are sent
-                });
-                console.log("Fetched Requests:", data); 
-                setRequests(data);
-            } catch (error) {
-                toast.error("Failed to fetch requests.");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchRequests();
-    }, []);
+  // Fetch Accepted & Completed Requests
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const [acceptedData, completedData] = await Promise.all([
+          axios.get(`${API_URL}/request/accepted`),
+          axios.get(`${API_URL}/request/completed`),
+        ]);
 
-    // Handle input change for charges
-    const handleChargeChange = (id, field, value) => {
-        setCharges((prev) => ({
-            ...prev,
-            [id]: { ...prev[id], [field]: value },
-        }));
+        setAcceptedRequests(acceptedData.data || []);
+        setCompletedRequests(completedData.data || []);
+      } catch (error) {
+        toast.error("Failed to fetch requests.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    // Mark request as completed
-    const completeRequest = async (id) => {
-        const { labourCharge = 0, partsCharge = 0 } = charges[id] || {};
+    fetchRequests();
+  }, []);
 
-        if (labourCharge < 0 || partsCharge < 0) {
-            toast.error("Charges cannot be negative.");
-            return;
-        }
+  // Handle charge input change
+  const handleChargeChange = (id, field, value) => {
+    setCharges((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value },
+    }));
+  };
 
-        const confirmComplete = window.confirm("Are you sure you want to complete this request?");
-        if (!confirmComplete) return;
+  // Complete request and move to completed list
+  const completeRequest = async (id) => {
+    const { labourCharge = 0, partsCharge = 0 } = charges[id] || {};
 
-        try {
-            setCompleting(true);
-            await axios.put(
-                `${API_URL}/request/${id}/complete`,
-                { labourCharge: Number(labourCharge), partsCharge: Number(partsCharge) },
-                { withCredentials: true }
-            );
+    if (labourCharge < 0 || partsCharge < 0) {
+      toast.error("Charges cannot be negative.");
+      return;
+    }
 
-            setRequests((prev) => prev.filter((req) => req._id !== id));
-            toast.success("Service request completed successfully.");
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to complete request.");
-        } finally {
-            setCompleting(false);
-        }
-    };
+    if (!window.confirm("Are you sure you want to complete this request?"))
+      return;
 
-    return (
-        <>
-        <br />
-        <br />
-        <br />
-        
+    try {
+      setCompleting(true);
+      await axios.put(`${API_URL}/request/${id}/complete`, {
+        labourCharge: Number(labourCharge),
+        partsCharge: Number(partsCharge),
+      });
 
-        <div className="max-w-4xl mx-auto p-16 bg-white shadow-md rounded-lg ">
-            <h2 className="text-2xl font-semibold mb-4">Accepted Requests</h2>
+      // Find and move the request
+      const completedReq = acceptedRequests.find((req) => req._id === id);
+      if (completedReq) {
+        completedReq.labourCharge = labourCharge;
+        completedReq.partsCharge = partsCharge;
+        completedReq.totalAmount = labourCharge + partsCharge;
+        completedReq.status = "Completed";
+        completedReq.paymentStatus = "Pending";
 
-            {loading ? (
-                <p>Loading requests...</p>
-            ) : requests.length === 0 ? (
-                <p>No accepted requests.</p>
-            ) : (
-                requests.map((request) => (
-                    <div key={request._id} className="border rounded-lg p-4 mb-4 shadow-sm">
-                        <h3 className="font-semibold">{request.serviceName}</h3>
-                        <p><strong>Client:</strong> {request.clientName || "N/A"}</p>
-                        <p><strong>Location:</strong> {request.location}</p>
-                        <p><strong>Status:</strong> {request.status}</p>
+        setAcceptedRequests((prev) => prev.filter((req) => req._id !== id));
+        setCompletedRequests((prev) => [completedReq, ...prev]);
+      }
 
-                        {/* Display Phone Number and Call Option */}
-                        {request.clientPhone && (
-                            <div className="mt-2 flex items-center gap-2">
-                                <p><strong>Phone:</strong> {request.clientPhone}</p>
-                                <a 
-                                    href={`tel:${request.clientPhone}`} 
-                                    className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                                >
-                                    Call Now
-                                </a>
-                            </div>
-                        )}
+      toast.success("Service request completed successfully.");
+    } catch (error) {
+      toast.error("Failed to complete request.");
+    } finally {
+      setCompleting(false);
+    }
+  };
 
-                        <div className="flex flex-wrap gap-2 mt-3">
-                            <input
-                                type="number"
-                                placeholder="Labour Charge"
-                                className="p-2 border rounded w-32"
-                                value={charges[request._id]?.labourCharge || ""}
-                                onChange={(e) => handleChargeChange(request._id, "labourCharge", e.target.value)}
-                            />
-                            <input
-                                type="number"
-                                placeholder="Parts Charge"
-                                className="p-2 border rounded w-32"
-                                value={charges[request._id]?.partsCharge || ""}
-                                onChange={(e) => handleChargeChange(request._id, "partsCharge", e.target.value)}
-                            />
-                            <button
-                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                onClick={() => completeRequest(request._id)}
-                                disabled={completing}
-                            >
-                                {completing ? "Completing..." : "Complete"}
-                            </button>
-                        </div>
-                    </div>
-                ))
-            )}
+  return (
+    <>
+      <section className="relative h-[500px] overflow-hidden">
+        <img
+          src="https://res.cloudinary.com/dandjcp0x/image/upload/v1742313363/nico-smit-HjFUevA2g1k-unsplash_qebyc7.jpg"
+          alt="Hero"
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white">
+            <h1 className="text-7xl font-bold mb-6">my onGoing Works</h1>
+          </div>
         </div>
-        </>
-        
-    );
+      </section>
+
+      <div className="max-w-6xl mx-auto p-8 bg-white shadow-md rounded-lg">
+        {/* Accepted Requests */}
+        <h2 className="text-2xl font-semibold mb-4">Accepted Requests</h2>
+        {loading ? (
+          <p>Loading...</p>
+        ) : acceptedRequests.length === 0 ? (
+          <p className="text-gray-500">No accepted requests at the moment.</p>
+        ) : (
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-200 text-left">
+                <th className="border p-2">Name</th>
+
+                <th className="border p-2">Location</th>
+                <th className="border p-2">Phone</th>
+                <th className="border p-2">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {acceptedRequests.map((request) => (
+                <tr key={request._id} className="border">
+                  <td className="p-2">{request.clientName || "N/A"}</td>
+                  <td className="p-2">{request.location || "N/A"}</td>
+                  <td className="p-2">
+                    {request.clientPhone || "N/A"}
+                    <a
+                      href={`tel:${request.clientPhone}`}
+                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-500"
+                    >
+                      Call Now
+                    </a>
+                  </td>
+                  <td className="p-2 flex gap-2">
+                    <input
+                      type="number"
+                      placeholder="Labour Charge"
+                      className="border p-1 w-24"
+                      value={charges[request._id]?.labourCharge || ""}
+                      onChange={(e) =>
+                        handleChargeChange(
+                          request._id,
+                          "labourCharge",
+                          e.target.value
+                        )
+                      }
+                    />
+                    <input
+                      type="number"
+                      placeholder="Parts Charge"
+                      className="border p-1 w-24"
+                      value={charges[request._id]?.partsCharge || ""}
+                      onChange={(e) =>
+                        handleChargeChange(
+                          request._id,
+                          "partsCharge",
+                          e.target.value
+                        )
+                      }
+                    />
+                    <button
+                      className="bg-blue-600 text-white p-1 rounded"
+                      onClick={() => completeRequest(request._id)}
+                      disabled={completing}
+                    >
+                      {completing ? "Processing..." : "Complete"}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        <br />
+        <br />
+        {/* Completed Requests */}
+        <h2 className="text-2xl font-semibold mt-8 mb-4">Completed Requests</h2>
+        {loading ? (
+          <p>Loading...</p>
+        ) : completedRequests.length === 0 ? (
+          <p className="text-gray-500">No completed requests yet.</p>
+        ) : (
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-200 text-left">
+                <th className="border p-2">Name</th>
+                <th className="border p-2">Phone</th>
+                <th className="border p-2">Total</th>
+                <th className="border p-2">Payment Status</th>
+                <th className="border p-2">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {completedRequests.map((request) => (
+                <tr key={request._id} className="border">
+                  <td className="p-2">{request.client?.name || "N/A"}</td>
+                  <td className="p-2">{request.client?.phone || "N/A"}</td>
+                  <td className="p-2">₹{request.totalAmount}</td>
+                  <td className="p-2">{request.paymentStatus}</td>
+                  <td className="p-2">
+                    <button
+                      className="bg-green-600 text-white p-1 rounded mr-2"
+                      onClick={() => setShowReceipt(request)}
+                    >
+                      View Receipt
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+        {/* Receipt Modal */}
+        {showReceipt && (
+          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h2 className="text-xl font-bold">Receipt</h2>
+              <p>
+                <strong>Name:</strong> {showReceipt.client?.name}
+              </p>
+              <p>
+                <strong>Phone:</strong> {showReceipt.client?.phone}
+              </p>
+              <p>
+                <strong>Labour Charge:</strong> ${showReceipt.labourCharge}
+              </p>
+              <p>
+                <strong>Parts Charge:</strong> ${showReceipt.partsCharge}
+              </p>
+              <p>
+                <strong>Total Amount:</strong> ${showReceipt.totalAmount}
+              </p>
+              <p>
+                <strong>Payment Status:</strong> {showReceipt.paymentStatus}
+              </p>
+              <button
+                className="mt-4 bg-red-500 text-white p-2 rounded"
+                onClick={() => setShowReceipt(null)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
 };
 
 export default Works;

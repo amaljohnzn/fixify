@@ -10,7 +10,7 @@ dotenv.config();
 //const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error("Stripe secret key is not configured in environment variables");
-  }
+}
 
 // Create a new service request
 const createServiceRequest = asyncHandler(async (req, res) => {
@@ -130,7 +130,7 @@ const getAcceptedRequests = asyncHandler(async (req, res) => {
 //  Get client requests status
 const getClientRequests = asyncHandler(async (req, res) => {
     const requests = await ServiceRequest.find({ client: req.user.id })
-        .select("serviceName status provider")
+        .select("serviceName status provider rating ")
         .populate("provider", "name phone"); // Populate only name & phone from provider
 
     res.json(requests);
@@ -274,7 +274,6 @@ const confirmPayment = asyncHandler(async (req, res) => {
     }
 });
 
-// Submit a rating after payment
 const submitRating = asyncHandler(async (req, res) => {
     const rating = Number(req.body.rating);
 
@@ -300,28 +299,39 @@ const submitRating = asyncHandler(async (req, res) => {
         throw new Error("You can only rate a service after payment is completed");
     }
 
+    // ✅ Prevent duplicate ratings
+    if (serviceRequest.rating) {
+        res.status(400);
+        throw new Error("You have already rated this service.");
+    }
+
+    // ✅ Save the rating
     serviceRequest.rating = rating;
     await serviceRequest.save();
 
-    // 🔄 Update Provider's Average Rating
+    // 🔄 Update Provider's Average Rating (only if provider exists)
     if (serviceRequest.provider) {
         await updateProviderRating(serviceRequest.provider);
     }
 
-    res.json({ message: "Rating submitted successfully", serviceRequest });
+    res.json({ 
+        message: "Rating submitted successfully", 
+        rating: serviceRequest.rating,
+        serviceRequest 
+    });
 });
 
 // Function to Update Provider's Average Rating
 const updateProviderRating = async (providerId) => {
     const ratings = await ServiceRequest.aggregate([
-        { $match: { provider: providerId, rating: { $ne: null } } }, 
+        { $match: { provider: providerId, rating: { $ne: null } } },
         { $group: { _id: "$provider", avgRating: { $avg: "$rating" }, count: { $sum: 1 } } }
     ]);
 
     if (ratings.length > 0) {
-        await User.findByIdAndUpdate(providerId, { 
-            rating: ratings[0].avgRating, 
-            ratingCount: ratings[0].count 
+        await User.findByIdAndUpdate(providerId, {
+            rating: ratings[0].avgRating,
+            ratingCount: ratings[0].count
         });
     }
 };
@@ -330,8 +340,8 @@ const getPastBookingsForProvider = asyncHandler(async (req, res) => {
         provider: req.user.id,
         status: "Paid" // Only show Paid bookings
     })
-    .populate("client", "name phone location") // Populate client details
-    .sort({ createdAt: -1 });
+        .populate("client", "name phone location") // Populate client details
+        .sort({ createdAt: -1 });
 
     const formattedJobs = pastJobs.map(job => ({
         _id: job._id,
@@ -341,10 +351,76 @@ const getPastBookingsForProvider = asyncHandler(async (req, res) => {
         location: job.location,
         status: job.status,
         paymentStatus: job.paymentStatus || "Paid",
-        createdAt: job.createdAt
+        createdAt: job.createdAt,
+        totalAmount: job.totalAmount
     }));
 
     res.json(formattedJobs); // ✅ Send response
+});
+
+const getCompletedServices = asyncHandler(async (req, res) => {
+    // Filter only Completed and Paid service requests
+    const filter = { provider: req.user.id, status: { $in: ["Completed"] } };
+
+    const completedRequests = await ServiceRequest.find(filter)
+        .populate("client", "name phone location")
+        .populate("provider", "name phone")
+        .sort({ completedAt: -1 }); // Ensure sorting reflects actual completion
+
+    const formattedRequests = completedRequests.map(request => ({
+        _id: request._id,
+        client: request.client ? {
+            _id: request.client._id,
+            name: request.client.name,
+            phone: request.client.phone,
+            location: request.client.location
+        } : null,
+        provider: request.provider ? {
+            _id: request.provider._id,
+            name: request.provider.name,
+            phone: request.provider.phone
+        } : null,
+        serviceName: request.serviceName,
+        status: request.status,
+        labourCharge: request.labourCharge || 0, // Ensure defaults
+        partsCharge: request.partsCharge || 0,
+        totalAmount: request.totalAmount || 0,
+        paymentStatus: request.paymentStatus || "Pending", // Default if undefined
+        completedAt: request.completedAt || request.updatedAt // Use completedAt if available
+    }));
+
+    res.json(formattedRequests);
+});
+
+const getReceipt = asyncHandler(async (req, res) => {
+    try {
+        const receipt = await ServiceRequest.findOne({ 
+            _id: req.params.id, 
+            status: { $regex: /^paid$/i } // Case-insensitive match
+        }).populate("provider", "name phone");
+
+        if (!receipt) {
+            return res.status(404).json({ message: "Receipt not found" });
+        }
+
+        // Format the response to match frontend expectations
+        const formattedReceipt = {
+            _id: receipt._id,
+            providerName: receipt.provider.name || "Unknown",
+            providerPhone: receipt.provider.phone || "N/A",
+            serviceName: receipt.serviceName || "N/A",
+            paymentDate: receipt.completedAt 
+                ? new Date(receipt.completedAt).toISOString() 
+                : "N/A",
+            totalAmount: receipt.totalAmount || 0,
+            paymentStatus: receipt.paymentStatus || "Paid",
+        };
+
+        res.status(200).json(formattedReceipt);
+    } catch (error) {
+        console.error("Error fetching receipt:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
 });
 
 
@@ -359,5 +435,5 @@ module.exports = {
     viewBill,
     completeServiceRequest,
     submitRating,
-    getPastBookingsForProvider,createPaymentIntent
+    getPastBookingsForProvider, createPaymentIntent, getCompletedServices, getReceipt
 };

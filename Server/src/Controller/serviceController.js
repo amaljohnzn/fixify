@@ -96,4 +96,5 @@ const deleteService = asyncHandler(async (req, res) => {
     res.json({ message: `Service '${service.name}' removed successfully` });
 });
 
+
 module.exports = { addService, updateService, getServices, deleteService };

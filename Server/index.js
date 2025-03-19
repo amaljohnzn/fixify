@@ -8,6 +8,7 @@ const serviceRoutes = require("./src/Routes/serviceRoutes")
 const serviceRequest = require('./src/Routes/serviceRequestRoutes')
 const adminRoute = require("./src/Routes/adminRoute")
 const providerRoute = require("./src/Routes/providerRoute")
+const contactRoutes = require("./src/Routes/contactRoute");
 var cors = require('cors')
 
 // Connect to Database
@@ -23,12 +24,14 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization','Cookie']
 }));
 
+
+
 app.use("/api/users", userRoutes);
 app.use("/api/service", serviceRoutes); 
 app.use("/api/request", serviceRequest); 
 app.use("/api/admin", adminRoute); 
 app.use("/api/provider", providerRoute); 
-
+app.use("/api/contact", contactRoutes);
 
 
 app.get("/", (req, res) => {

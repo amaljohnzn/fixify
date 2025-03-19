@@ -30,6 +30,8 @@ const ServicesPage = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Services");
+  const [currentPage, setCurrentPage] = useState(1);
+  const servicesPerPage = 8; // Number of services per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,6 +57,11 @@ const ServicesPage = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // ** Pagination Logic **
+  const totalPages = Math.ceil(filteredServices.length / servicesPerPage);
+  const startIndex = (currentPage - 1) * servicesPerPage;
+  const paginatedServices = filteredServices.slice(startIndex, startIndex + servicesPerPage);
+
   return (
     <>
       {/* Hero Section */}
@@ -73,15 +80,18 @@ const ServicesPage = () => {
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Our Services </h2>
-            <button className="flex items-center text-custom hover:text-custom/80">
-              <span>View All</span>
-              <i className="fas fa-chevron-right ml-2"></i>
-            </button>
           </div>
 
           {/* Filters */}
           <div className="mb-6 flex justify-between items-center flex-wrap gap-4">
-            <select className="border rounded-lg px-3 py-2 text-sm" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <select
+              className="border rounded-lg px-3 py-2 text-sm"
+              value={category}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                setCurrentPage(1); // Reset to first page on filter change
+              }}
+            >
               <option>All Services</option>
               <option>Plumbing</option>
               <option>Electrical</option>
@@ -94,7 +104,10 @@ const ServicesPage = () => {
               placeholder="Search professionals..."
               className="border rounded-lg px-3 py-2 text-sm w-60"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1); // Reset to first page on search
+              }}
             />
           </div>
 
@@ -102,10 +115,10 @@ const ServicesPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {loading ? (
               <p className="text-center col-span-full">Loading services...</p>
-            ) : filteredServices.length === 0 ? (
+            ) : paginatedServices.length === 0 ? (
               <p className="text-center col-span-full">No service providers found.</p>
             ) : (
-              filteredServices.map((service) => (
+              paginatedServices.map((service) => (
                 <div
                   key={service._id}
                   className="bg-white rounded-lg shadow-md p-4 border hover:shadow-lg transition flex flex-col justify-between"
@@ -127,8 +140,7 @@ const ServicesPage = () => {
                       </div>
                     </div>
                   </div>
-<p>{service.
-priceRange}</p>
+
                   {/* Experience */}
                   <p className="text-gray-600 text-sm mb-3">
                     {CATEGORY_DESCRIPTION[service.category] || CATEGORY_DESCRIPTION["Default"]}
@@ -136,38 +148,55 @@ priceRange}</p>
 
                   {/* Skills */}
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {([
-                      ...(CATEGORY_SKILLS[service.category] || CATEGORY_SKILLS["Default"]), 
-                      ...(service.skills || [])
-                    ]).slice(0, 3).map((skill, index) => (
-                      <span key={index} className="bg-gray-100 px-2 py-1 rounded-full text-xs">
-                        {skill}
-                      </span>
-                    ))}
+                    {([...(CATEGORY_SKILLS[service.category] || CATEGORY_SKILLS["Default"]), ...(service.skills || [])])
+                      .slice(0, 3)
+                      .map((skill, index) => (
+                        <span key={index} className="bg-gray-100 px-2 py-1 rounded-full text-xs">
+                          {skill}
+                        </span>
+                      ))}
                   </div>
 
-                  {/* Book Now Button - Stays at the Bottom */}
+                  {/* Book Now Button */}
                   <div className="mt-auto">
-                  <button
-  onClick={() =>
-    navigate('/booking', {
-      state: {
-        serviceId: service._id,
-        serviceName: service.name,
-        category: service.category,
-        priceRange: service.priceRange,
-      },
-    })
-  }
-  className="w-full bg-black text-white px-3 py-2 rounded-md flex justify-center items-center gap-2 text-sm hover:bg-gray-900"
->
-  <span>Book Now →</span>
-  <i className="fas fa-arrow-right"></i>
-</button>
+                    <button
+                      onClick={() =>
+                        navigate("/booking", {
+                          state: {
+                            serviceId: service._id,
+                            serviceName: service.name,
+                            category: service.category,
+                            priceRange: service.priceRange,
+                          },
+                        })
+                      }
+                      className="w-full bg-black text-white px-3 py-2 rounded-md flex justify-center items-center gap-2 text-sm hover:bg-gray-900"
+                    >
+                      <span>Book Now →</span>
+                    </button>
                   </div>
                 </div>
               ))
             )}
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-center mt-6">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+              className="px-4 py-2 mx-2 border rounded-md bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className="px-4 py-2">{currentPage} of {totalPages}</span>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              className="px-4 py-2 mx-2 border rounded-md bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            >
+              Next
+            </button>
           </div>
         </div>
       </section>

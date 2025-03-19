@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "./img/logo.png";
+import Darkmode from "./Darkmode"
 
 const Navbar = () => {
   return (
@@ -69,7 +70,9 @@ const Navbar = () => {
                   <li><Link to="/profile" className="text-black hover:text-gray-600">Profile</Link></li>
                   <li><Link to="/settings" className="text-black hover:text-gray-600">Settings</Link></li>
                   <li><Link to="logout" className="text-black hover:text-gray-600">Logout</Link></li>
+                  <Darkmode/>
                 </ul>
+               
               </div>
             
             </div>

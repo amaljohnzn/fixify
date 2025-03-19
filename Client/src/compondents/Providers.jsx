@@ -9,7 +9,7 @@ const Providers = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-  const providersPerPage = 8;
+  const providersPerPage = 7;
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -51,8 +51,24 @@ const Providers = () => {
   const currentProviders = filteredProviders.slice(indexOfFirstProvider, indexOfLastProvider);
   
   return (
+    <>
+    {/* Hero Section */}
+    <section className="relative h-[500px] overflow-hidden">
+      <img
+        src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1920&amp;q=80"
+          
+        alt="Hero"
+        className="w-full h-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="text-center text-white">
+          <h1 className="text-5xl font-bold mb-6">Provider Verification & View</h1>
+        </div>
+      </div>
+    </section>
+    
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-semibold mb-4">Pending Verifications</h1>
       <div className="mb-4 flex gap-2">
         {["All", "Pending", "Approved", "Rejected"].map((status) => (
           <button
@@ -129,6 +145,9 @@ const Providers = () => {
         </div>
       )}
     </div>
+    </>
+    
+   
   );
 };
 

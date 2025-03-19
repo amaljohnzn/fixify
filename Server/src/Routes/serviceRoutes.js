@@ -14,3 +14,4 @@ router.put("/update/:id", protect, admin, uploadServiceImage.single("image"), up
 router.delete("/delete/:id", protect, admin, deleteService);
 
 module.exports = router;
+
