@@ -1,6 +1,6 @@
 
 import React from "react";
-import './App.css'
+//import './App.css'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChooseRegister from "./compondents/ChoseRegister";
@@ -26,6 +26,7 @@ import Providers from "./compondents/Providers"
 import Revenue from "./compondents/Revenue";
 import Report from "./compondents/Report";
 import BookingList from "./compondents/BookingList"
+
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           <Route path="/bookingList" element={<BookingList/>} />
           <Route path="/revenue" element={<Revenue/>} />
           <Route path="/providers" element={<Providers/>} />
+
 
 
 

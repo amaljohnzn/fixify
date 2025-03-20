@@ -30,7 +30,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="bg-white">
+    <div >
       {/* Hero Section */}
       <section className="relative h-[500px] overflow-hidden">
         <img
