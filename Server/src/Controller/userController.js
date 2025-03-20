@@ -169,12 +169,12 @@ const loginUser = asyncHandler(async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,  
-      secure: process.env.NODE_ENV === "production",  
-      sameSite: "Strict",  
-      maxAge: 30 * 24 * 60 * 60 * 1000, 
+      secure: true , 
+      sameSite: "None",  
+      //maxAge: 30 * 24 * 60 * 60 * 1000, 
     });
 
-
+  
     res.json({
       message: "Login successful",
       _id: user.id,

@@ -19,7 +19,7 @@ export default function SignIn() {
 
     try {
       const { data } = await axios.post(
-        `${API_BASE_URL}/users/login`, 
+        `${API_BASE_URL}users/login`, 
         { email, password },
         { withCredentials: true }
       );

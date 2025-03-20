@@ -17,12 +17,23 @@ connectDB();
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,      
-  methods: ['GET', 'POST', 'PATCH', 'DELETE','PUT'],
-  allowedHeaders: ['Content-Type', 'Authorization','Cookie']
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Allow sending cookies
 }));
+//app.use(cors({
+  //origin: process.env.FRONTEND_URL,
+ // credentials: true,      
+  ///methods: ['GET', 'POST', 'PATCH', 'DELETE','PUT'],
+  //allowedHeaders: ['Content-Type', 'Authorization','Cookie']
+//}));
 
 
 
