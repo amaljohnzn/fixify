@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion"; // Import Framer Motion
-import FixifyLogo from "./img/logo.png"
+import { motion } from "framer-motion";
+import FixifyLogo from "./img/logo.png";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -24,10 +24,20 @@ export default function SignIn() {
         { withCredentials: true }
       );
 
-      console.log(data);
-      
+      console.log("Login Response:", data);
+
+      if (data.role) {
+        // Store role in localStorage
+        localStorage.setItem("role", data.role);
+
+        // Navigate to home, let Navbar handle role-based links
         navigate("/");
-      
+
+        // Reload to update navbar immediately
+        window.location.reload();
+      } else {
+        setError("Role not found. Please try again.");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong!");
     } finally {
@@ -37,31 +47,20 @@ export default function SignIn() {
 
   return (
     <main className="h-screen flex items-center justify-center bg-gray-50 relative">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://res.cloudinary.com/dandjcp0x/image/upload/v1742378862/jeshoots-com-9n1USijYJZ4-unsplash_eg3sfc.jpg')",
-        }}
-      ></div>
-      {/* Overlay */}
-      <div className="absolute inset-0 backdrop-blur-sm bg-black/40"></div>
-
-      {/* Animated Sign-In Form */}
       <motion.div
-        initial={{ opacity: 0, y: 50 }} // Start hidden and below
-        animate={{ opacity: 1, y: 0 }} // Fade in and move up
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10"
       >
         <div className="text-center">
-          <span className="text-2xl font-[Pacifico] text-black"> <img src={FixifyLogo} alt="Fixify Logo" className="mx-auto w-20 h-20" /></span>
+          <span className="text-2xl font-[Pacifico] text-black">
+            <img src={FixifyLogo} alt="Fixify Logo" className="mx-auto w-20 h-20" />
+          </span>
           <h2 className="mt-4 text-3xl font-extrabold text-gray-900">Sign In</h2>
           <p className="mt-2 text-sm text-gray-600">Log in to your account</p>
         </div>
 
-        {/* Form */}
         <form className="mt-6 space-y-4" onSubmit={handleLogin}>
           <div>
             <label className="block text-sm font-medium text-gray-700">Email</label>
@@ -89,7 +88,6 @@ export default function SignIn() {
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          {/* Animated Button */}
           <motion.button
             type="submit"
             disabled={loading}
