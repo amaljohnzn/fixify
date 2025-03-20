@@ -30,12 +30,12 @@ app.use(cors({
 app.options("*", cors());
 
 
-app.use("/api/users", userRoutes);
-app.use("/api/service", serviceRoutes); 
-app.use("/api/request", serviceRequest); 
-app.use("/api/admin", adminRoute); 
-app.use("/api/provider", providerRoute); 
-app.use("/api/contact", contactRoutes);
+app.use("/users", userRoutes);
+app.use("/service", serviceRoutes); 
+app.use("/request", serviceRequest); 
+app.use("/admin", adminRoute); 
+app.use("/provider", providerRoute); 
+app.use("/contact", contactRoutes);
 
 
 app.get("/", (req, res) => {
