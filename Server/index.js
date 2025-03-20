@@ -18,23 +18,16 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true, // Allow sending cookies
-}));
-//app.use(cors({
-  //origin: process.env.FRONTEND_URL,
- // credentials: true,      
-  ///methods: ['GET', 'POST', 'PATCH', 'DELETE','PUT'],
-  //allowedHeaders: ['Content-Type', 'Authorization','Cookie']
-//}));
 
+app.use(cors({
+  origin: process.env.FRONTEND_URL, // Allow only your frontend
+  credentials: true, // Allow cookies (important for JWT)
+  methods: ["GET", "POST", "PATCH", "DELETE", "PUT"], // Allowed HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+}));
+
+// ✅ Handle preflight requests properly
+app.options("*", cors());
 
 
 app.use("/api/users", userRoutes);
