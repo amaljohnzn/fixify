@@ -20,7 +20,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/users/profile`, { withCredentials: true });
+        const { data } = await axios.get(`${API_URL}/api/users/profile`, { withCredentials: true });
         setUser(data);
       } catch (error) {
         console.error("Failed to fetch profile:", error.response?.data?.message || error.message);
@@ -34,7 +34,7 @@ const ProfilePage = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.put(`${API_URL}/users/profile`, user, { withCredentials: true });
+      const { data } = await axios.put(`${API_URL}/api/users/profile`, user, { withCredentials: true });
       setUser(data);
       alert("Profile updated successfully!");
       localStorage.setItem("user", JSON.stringify(data));
