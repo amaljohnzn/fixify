@@ -13,7 +13,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header className="bg-white shadow-sm fixed w-full z-50">
+    <header className=" shadow-sm fixed w-full z-50">
       <nav className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           {/* Logo on the left */}
@@ -27,6 +27,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             {/* Navigation Links */}
             <div className="hidden md:flex space-S-1">
+            <Darkmode />
               <Link to="/" className="btn btn-ghost normal-case">
                 Home
               </Link>
@@ -144,7 +145,7 @@ const Navbar = () => {
                       </Link>
                     </li>
 
-                    <Darkmode />
+                   
                   </ul>
                 </div>
               </div>

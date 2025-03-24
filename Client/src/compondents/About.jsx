@@ -8,31 +8,8 @@ const About = () => {
     { year: "2024", text: "Launched digital booking platform" },
   ];
   return (
-    <main className="pt-20 font-[Poppins]">
-      {/* Hero Section */}
-      <section className="relative h-[500px] bg-gray-900">
-        <div className="absolute inset-0">
-          <img
-            src="https://res.cloudinary.com/dandjcp0x/image/upload/v1742356808/8db36e8c-57e5-4a94-9959-459879e9d964_1_vhgj4r.jpg" 
-            className="w-full h-full object-cover"
-            alt="Hero Image"
-          />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-6 h-full flex items-center">
-          <div className="max-w-2xl">
-            <h1 className="text-5xl font-bold text-white mb-6">
-              Quality Home Services You Can Trust
-            </h1>
-            <p className="text-xl text-white-200 mb-8">
-              Your trusted partner in home maintenance and repairs since 2010.
-              Professional, reliable, and fully insured services.
-            </p>
-            <button className="rounded-lg bg-[#000000] text-white px-8 py-4 text-lg font-medium hover:bg-[#1e3a8a] transition">
-              Schedule Service Now
-            </button>
-          </div>
-        </div>
-      </section>
+    <main className="pt-18 font-[Poppins]">
+     
 
       {/* Who We Are */}
       <section className="py-16 bg-gray-50">
