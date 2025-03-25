@@ -84,7 +84,8 @@ const Works = () => {
   };
 
   return (
-    <>
+   <div className="pt-14">
+     
       <section className="relative h-[500px] overflow-hidden">
         <img
           src="https://res.cloudinary.com/dandjcp0x/image/upload/v1742313363/nico-smit-HjFUevA2g1k-unsplash_qebyc7.jpg"
@@ -99,17 +100,17 @@ const Works = () => {
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto p-8 bg-white shadow-md rounded-lg">
+      <div className="max-w-6xl mx-auto p-8  shadow-md rounded-lg">
         {/* Accepted Requests */}
         <h2 className="text-2xl font-semibold mb-4">Accepted Requests</h2>
         {loading ? (
           <p>Loading...</p>
         ) : acceptedRequests.length === 0 ? (
-          <p className="text-gray-500">No accepted requests at the moment.</p>
+          <p >No accepted requests at the moment.</p>
         ) : (
           <table className="w-full border-collapse border border-gray-300">
             <thead>
-              <tr className="bg-gray-200 text-left">
+              <tr className="bg-gray-200 text-left  text-black">
                 <th className="border p-2">Name</th>
 
                 <th className="border p-2">Location</th>
@@ -122,11 +123,11 @@ const Works = () => {
                 <tr key={request._id} className="border">
                   <td className="p-2">{request.clientName || "N/A"}</td>
                   <td className="p-2">{request.location || "N/A"}</td>
-                  <td className="p-2">
+                  <td className="p-2 ">
                     {request.clientPhone || "N/A"}
                     <a
-                      href={`tel:${request.clientPhone}`}
-                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-500"
+                      href={`tel:${request.clientPhone }`}
+                      className="px-2 py-2 pl- bg-green-500 text-white rounded hover:bg-green-500 "
                     >
                       Call Now
                     </a>
@@ -182,7 +183,7 @@ const Works = () => {
         ) : (
           <table className="w-full border-collapse border border-gray-300">
             <thead>
-              <tr className="bg-gray-200 text-left">
+              <tr className="bg-gray-200 text-left text-black">
                 <th className="border p-2">Name</th>
                 <th className="border p-2">Phone</th>
                 <th className="border p-2">Total</th>
@@ -214,7 +215,7 @@ const Works = () => {
         {/* Receipt Modal */}
         {showReceipt && (
           <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="bg-[#778da9] p-12 rounded-lg shadow-lg">
               <h2 className="text-xl font-bold">Receipt</h2>
               <p>
                 <strong>Name:</strong> {showReceipt.client?.name}
@@ -244,7 +245,8 @@ const Works = () => {
           </div>
         )}
       </div>
-    </>
+    
+   </div>
   );
 };
 

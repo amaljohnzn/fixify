@@ -24,13 +24,13 @@ const Navbar = () => {
           </div>
 
           {/* Navigation Links & Icons on the right */}
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-6 ">
             {/* Navigation Links */}
             <div className="hidden md:flex space-S-1">
             <Darkmode />
-              <Link to="/" className="btn btn-ghost normal-case">
-                Home
-              </Link>
+            <Link to="/" className="btn">
+  Home
+</Link>
 
               <Link to="/about" className="btn btn-ghost normal-case">
                 About
@@ -123,25 +123,18 @@ const Navbar = () => {
                   </div>
                   <ul
                     tabIndex={0}
-                    className="menu menu-sm dropdown-content bg-white rounded-box shadow mt-3 w-52 p-2"
+                    className="menu menu-sm dropdown-content  rounded-box shadow mt-3 w-52 p-2"
                   >
                     <li>
                       <Link to="/profile" className="btn btn-ghost normal-case">
-                        Profile
+                      👤 Profile
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        to="/settings"
-                        className="btn btn-ghost normal-case"
-                      >
-                        Settings
-                      </Link>
-                    </li>
+                    
 
                     <li>
                       <Link to="logout" className="btn btn-ghost normal-case">
-                        Logout
+                      ↪ Logout
                       </Link>
                     </li>
 

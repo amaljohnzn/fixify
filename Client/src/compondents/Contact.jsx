@@ -31,8 +31,8 @@ const ContactUs = () => {
 
   return (
     
-    <main className="pt-0">
-       <section className="relative h-[500px] bg-gray-900">
+    <main className="pt-14">
+       <section className="relative h-[500px] bg--900">
         <div className="absolute inset-0">
           <img
             src="https://res.cloudinary.com/dandjcp0x/image/upload/v1741665499/anthony-indraus-Bb9jWuTMPUk-unsplash_xitcxx.jpg" 
@@ -42,29 +42,27 @@ const ContactUs = () => {
         </div>
         <div className="relative max-w-7xl mx-auto px-6 h-full flex items-center">
           <div className="max-w-2xl">
-            <h1 className="text-5xl font-bold text-white mb-6">
+            <h1 className="text-5xl font-bold  mb-6">
               Quality Home Services You Can Trust
             </h1>
             
-            <button className="rounded-lg bg-[#000000] text-white px-8 py-4 text-lg font-medium hover:bg-[#1e3a8a] transition">
-              Schedule Service Now
-            </button>
+          <p> We’re available 24/7 to ensure you get the best experience. Let’s connect!</p>
           </div>
         </div>
       </section>
-      <section className="pt-8 pb-16 bg-gray-50">
+      <section className="pt-8 pb-16 bg--50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             
             {/* Left - Contact Form */}
-            <div className="bg-white p-8 rounded-lg shadow-sm h-full flex flex-col">
+            <div className=" p-8 rounded-lg shadow-sm h-full flex flex-col">
               <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
               
               {success && <p className="mb-4 text-green-600">{success}</p>}
               
               <form className="space-y-6 flex-grow" onSubmit={handleSubmit}>
                 <div>
-                  <label className="block text-gray-700 mb-2">Name</label>
+                  <label className="block text-700 mb-2">Name</label>
                   <input
                     type="text"
                     name="name"
@@ -76,7 +74,7 @@ const ContactUs = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 mb-2">Email</label>
+                  <label className="block -700 mb-2">Email</label>
                   <input
                     type="email"
                     name="email"
@@ -88,7 +86,7 @@ const ContactUs = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 mb-2">Phone</label>
+                  <label className="block text-700 mb-2">Phone</label>
                   <input
                     type="tel"
                     name="phone"
@@ -100,7 +98,7 @@ const ContactUs = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 mb-2">Message</label>
+                  <label className="block text-700 mb-2">Message</label>
                   <textarea
                     name="message"
                     value={formData.message}
@@ -112,7 +110,7 @@ const ContactUs = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-custom/90"
+                  className="w-full  shadow-xl  py-3 rounded-lg font-medium hover:bg-custom/90"
                   disabled={loading}
                 >
                   {loading ? "Sending..." : "Send Message"}
@@ -132,51 +130,45 @@ const ContactUs = () => {
               </div>
 
               {/* Contact Information */}
-              <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className=" p-6 rounded-xl shadow-xl">
                 <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
                 <div className="space-y-1">
                   <div className="flex items-center">
                     <i className="fas fa-map-marker-alt text-custom mr-2"></i>
-                    <p className="text-gray-600">Kochin Business Street, Kochi, Kerala</p>
+                    <p className="text-600">Kochin Business Street, Kochi, Kerala</p>
                   </div>
                   <div className="flex items-center">
                     <i className="fas fa-phone text-custom mr-2"></i>
-                    <p className="text-gray-600">+91 9182736450</p>
+                    <p className="text-600">+91 9182736450</p>
                   </div>
                   <div className="flex items-center">
                     <i className="fas fa-envelope text-custom mr-2"></i>
-                    <p className="text-gray-600">contact@fixify.com</p>
+                    <p className="text-600">contact@fixify.com</p>
                   </div>
                 </div>
               </div>
 
               {/* Business Hours */}
-              <div className="bg-white p-6 rounded-lg shadow-sm mt-4 flex-grow">
+              <div className=" p-6 rounded-xl shadow-xl mt-4 flex-grow">
                 <h3 className="text-xl font-semibold mb-4">Business Hours</h3>
                 <div className="space-y-1">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Monday - Friday</span>
-                    <span className="text-gray-800">8:00 AM - 6:00 PM</span>
+                    <span className="text-600">Monday - Friday</span>
+                    <span className="text-800">8:00 AM - 6:00 PM</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Saturday</span>
-                    <span className="text-gray-800">9:00 AM - 4:00 PM</span>
+                    <span className="text-600">Saturday</span>
+                    <span className="text-800">9:00 AM - 4:00 PM</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Sunday</span>
-                    <span className="text-gray-800">Closed</span>
+                    <span className="text-600">Sunday</span>
+                    <span className="text-800">Closed</span>
                   </div>
                 </div>
               </div>
 
               {/* Send Message Button - Right Side */}
-              <button
-                onClick={handleSubmit}
-                className="mt-4 w-full bg-custom text-white py-3 rounded-lg font-medium hover:bg-custom/90"
-                disabled={loading}
-              >
-                {loading ? "Sending..." : "Send Message"}
-              </button>
+             
             </div>
 
           </div>

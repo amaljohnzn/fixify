@@ -65,7 +65,7 @@ const PaymentForm = ({ bookingId, amount }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-4  p-6 rounded-lg shadow-md max-w-md mx-auto">
       <input
         type="text"
         placeholder="Cardholder Name"
@@ -78,7 +78,7 @@ const PaymentForm = ({ bookingId, amount }) => {
       <button
         type="submit"
         disabled={!stripe || loading}
-        className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+        className="w-full px-4 py-2 bg-blue-500  rounded hover:bg-blue-600 disabled:bg-gray-400"
       >
         {loading ? "Processing..." : "Pay Now"}
       </button>
@@ -105,7 +105,7 @@ const Payment = () => {
     }}
   >
   
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+      <div className="bg-white  text-black p-8 rounded-lg shadow-lg max-w-lg w-full">
         <h2 className="text-2xl font-bold mb-4 text-center">Payment</h2>
         <p className="text-lg mb-4 text-center">Total Amount: <strong>₹{amount}</strong></p>
         <Elements stripe={stripePromise}>

@@ -166,7 +166,7 @@ const BookingStatusPage = () => {
           <p className="text-center text-gray-600 mt-4">No bookings found.</p>
         ) : (
           <div className="mt-4 overflow-x-auto mb-4">
-            <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+            <table className="min-w-full  border border-gray-200 shadow-md rounded-lg">
               <thead className="bg-gray-200 text-gray-700">
                 <tr>
                   <th className="p-2 border">Service</th>
@@ -236,8 +236,8 @@ const BookingStatusPage = () => {
         )}
 
 {selectedBill && billType === "Bill" && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+  <div className="fixed inset-0 flex items-center justify-center  bg-opacity-50">
+    <div className="bg-[#778da9]  p-6 rounded-lg shadow-lg w-96">
       <h2 className="text-lg font-bold mb-4">Bill Details</h2>
       <p><strong>Provider:</strong> {selectedBill.providerName}</p>
       <p><strong>Phone:</strong> {selectedBill.providerPhone}</p>
@@ -266,7 +266,7 @@ const BookingStatusPage = () => {
 
 {selectedBill && billType === "Receipt" && (
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-md">
+    <div className="bg-[#d6ccc2] p-6 rounded-lg shadow-lg w-96 max-w-md">
       <h2 className="text-lg font-bold mb-4">Payment Receipt</h2>
       <p><strong>Provider:</strong> {selectedBill?.providerName || <span className="text-gray-500">Unknown</span>}</p>
       <p><strong>Phone:</strong> {selectedBill?.providerPhone || <span className="text-gray-500">N/A</span>}</p>

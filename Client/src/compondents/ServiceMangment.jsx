@@ -80,7 +80,7 @@ const ServiceManagement = () => {
 
   return (
     
-    <div className="bg-gray-100 min-h-screen">
+    <div className=" min-h-screen pt-14">
       
     {/* Hero Section */}
     <section className="relative h-[500px] overflow-hidden">
@@ -117,9 +117,9 @@ const ServiceManagement = () => {
             <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : (
-          <div className="bg-white mt-6 shadow-md rounded-lg overflow-hidden">
+          <div className=" mt-6 shadow-md rounded-lg overflow-hidden">
             <table className="w-full text-left">
-              <thead className="bg-gray-200">
+              <thead className="bg-gray-200 text-black">
                 <tr>
                   <th className="p-4">Service Name</th>
                   <th className="p-4">Category</th>
@@ -131,7 +131,7 @@ const ServiceManagement = () => {
               <tbody>
                 {services.length > 0 ? (
                   services.map((service) => (
-                    <tr key={service._id} className="border-t hover:bg-gray-100">
+                    <tr key={service._id} className="border-t hover:bg-gray-100 ">
                       <td className="p-4 flex items-center gap-3">
                         <img src={service.image} alt={service.name} className="w-10 h-10 rounded-full" />
                         <span className="font-medium">{service.name}</span>

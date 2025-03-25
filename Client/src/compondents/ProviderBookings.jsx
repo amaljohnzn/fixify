@@ -72,7 +72,7 @@ const ProviderBooking = () => {
 
       <div className="grid grid-cols-2 gap-6 mt-6">
         {/* Left Side: Pending Requests */}
-        <div className="bg-white p-4 rounded-lg shadow-md">
+        <div className=" p-4 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Pending Requests</h2>
           {pendingRequests.length > 0 ? (
             paginate(pendingRequests, currentPagePending).map((request) => (
@@ -114,7 +114,7 @@ const ProviderBooking = () => {
         </div>
 
         {/* Right Side: Past Jobs */}
-        <div className="bg-white p-4 rounded-lg shadow-md">
+        <div className=" p-4 rounded-lg shadow-xl">
           <h2 className="text-xl font-semibold mb-4">Past Jobs</h2>
           {pastJobs.length > 0 ? (
             paginate(pastJobs, currentPagePast).map((job) => (

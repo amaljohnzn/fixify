@@ -36,7 +36,7 @@ const Providers = () => {
         { providerId, status },
         { withCredentials: true }
       );
-
+      alert("sucess.");
       console.log("API Response:", response.data); // ✅ Debugging API Response
 
       // ✅ Ensure state updates correctly
@@ -61,7 +61,7 @@ const Providers = () => {
   const currentProviders = filteredProviders.slice(indexOfFirstProvider, indexOfLastProvider);
 
   return (
-    <>
+    <div className="pt-14">
       {/* Hero Section */}
       <section className="relative h-[500px] overflow-hidden">
         <img
@@ -75,12 +75,12 @@ const Providers = () => {
         </div>
       </section>
 
-      <div className="p-6 bg-gray-100 min-h-screen">
+      <div className="p-6  min-h-screen">
         <div className="mb-4 flex gap-2">
           {["All", "Pending", "Approved", "Rejected"].map((status) => (
             <button
               key={status}
-              className={`px-4 py-2 rounded ${filter === status ? "bg-blue-600 text-white" : "bg-gray-300"}`}
+              className={`px-4 py-2 rounded ${filter === status ? "bg-blue-600 text-white" : "bg-gray-300 text-black"}`}
               onClick={() => setFilter(status)}
             >
               {status}
@@ -93,10 +93,10 @@ const Providers = () => {
         ) : error ? (
           <p className="text-red-500">{error}</p>
         ) : (
-          <div className="bg-white p-4 rounded shadow-md">
+          <div className=" p-4 rounded shadow-xl">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-gray-200 text-left">
+                <tr className="bg-gray-500 text-black text-left">
                   <th className="p-2">Provider Name</th>
                   <th className="p-2">Contact Info</th>
                   <th className="p-2">Documents</th>
@@ -191,7 +191,7 @@ const Providers = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

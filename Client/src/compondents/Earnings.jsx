@@ -57,7 +57,7 @@ const Earnings = () => {
     };
 
     return (
-        <>
+        <div className="pt-14">
          {/* Hero Section */}
     <section className="relative h-[400px] overflow-hidden">
       <img
@@ -75,7 +75,7 @@ const Earnings = () => {
     </section>
 
 
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8 mb-6">
+    <div className="max-w-2xl mx-auto p-6 bg-white text-black shadow-lg rounded-lg mt-8 mb-6">
             <h2 className="text-2xl font-bold mb-4">Earnings Dashboard</h2>
 
             {error && <p className="text-red-500">{error}</p>}
@@ -116,7 +116,7 @@ const Earnings = () => {
                 </button>
             </form>
         </div>
-        </>
+        </div>
         
     );
 };

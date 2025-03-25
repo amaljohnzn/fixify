@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import FixifyLogo from "./img/logo.png";
+import { Link } from "react-router-dom";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -46,27 +47,28 @@ export default function SignIn() {
   };
 
   return (
-    <main className="h-screen flex items-center justify-center bg-gray-50 relative">
+   <div >
+     <main className="h-screen flex items-center justify-center  relative ">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10"
+        className="relative  p-8 rounded-lg shadow-lg w-full max-w-md z-10"
       >
         <div className="text-center">
           <span className="text-2xl font-[Pacifico] text-black">
             <img src={FixifyLogo} alt="Fixify Logo" className="mx-auto w-20 h-20" />
           </span>
           <h2 className="mt-4 text-3xl font-extrabold text-gray-900">Sign In</h2>
-          <p className="mt-2 text-sm text-gray-600">Log in to your account</p>
+          <p className="mt-2 text-sm text-600">Log in to your account</p>
         </div>
 
         <form className="mt-6 space-y-4" onSubmit={handleLogin}>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium ">Email</label>
             <input
               type="email"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
+              className="mt-1 block w-full rounded-md  shadow-sm focus:border-black focus:ring-black"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -75,7 +77,7 @@ export default function SignIn() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium ">Password</label>
             <input
               type="password"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
@@ -101,8 +103,18 @@ export default function SignIn() {
               "Sign In"
             )}
           </motion.button>
+        
+          
         </form>
+        <p className="py-4">
+        Don't have an account?{" "}
+        <Link to="/signup" className="text-blue-400 underline">
+          Sign Up
+        </Link>
+      </p>
+        
       </motion.div>
     </main>
+   </div>
   );
 }

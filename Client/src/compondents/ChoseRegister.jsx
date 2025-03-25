@@ -2,13 +2,16 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import logo from "./img/logo.png";
+import { Link } from "react-router-dom";
+
 
 const ChooseRegister = () => {
   const navigate = useNavigate();
   
   return (
-    <div 
-      className="vh-100 d-flex align-items-center justify-content-center position-relative" 
+   <div className="pt-12">
+     <div 
+      className="vh-100 d-flex align-items-center justify-content-center position-relative " 
       style={{
         backgroundImage: "url('https://res.cloudinary.com/dandjcp0x/image/upload/v1741587811/WhatsApp_Image_2025-03-10_at_11.52.38_47042ed3s_cgns0e.jpg')",
         backgroundSize: "cover",
@@ -19,7 +22,7 @@ const ChooseRegister = () => {
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
 
       {/* Main Card */}
-      <div className="bg-white p-4 rounded shadow-lg text-center position-relative" style={{ width: "380px" }}>
+      <div className=" bg-gray-100 p-4 rounded shadow-lg text-center relative" style={{ width: "380px" }}>
         
         {/* Logo */}
         <img 
@@ -54,9 +57,16 @@ const ChooseRegister = () => {
             <p className="text-muted">I want to hire services</p>
           </div>
         </div>
+        <p className="py-4">
+        Already have an account?{" "}
+        <Link to="/signin" className="text-blue-500 underline">
+          Sign In
+        </Link>
+      </p>
 
       </div>
     </div>
+   </div>
   );
 };
 

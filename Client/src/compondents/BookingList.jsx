@@ -68,7 +68,7 @@ const BookingList = () => {
   };
 
   return (
-    <>
+    <div className="pt-14">
      {/* Hero Section */}
      <section className="relative h-[400px] overflow-hidden">
       <img
@@ -83,7 +83,7 @@ const BookingList = () => {
         </div>
       </div>
     </section>
-    <div className="p-6 bg-white shadow-md rounded-lg">
+    <div className="p-6  shadow-md rounded-lg">
         
    
 
@@ -112,7 +112,7 @@ const BookingList = () => {
   
         {/* Table for Bookings */}
         <div className="overflow-x-auto">
-          <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
+          <table className="w-full  text-black border border-gray-200 rounded-lg shadow-md">
             <thead className="bg-gray-100">
               <tr className="text-left">
                 <th className="p-4 font-bold text-base min-w-[150px]">Client</th>
@@ -143,9 +143,7 @@ const BookingList = () => {
                   return (
                     <tr
                       key={booking._id}
-                      className={`${
-                        index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                      } border-b last:border-none hover:bg-gray-100 transition-colors`}
+                     
                     >
                       {/* Client Info */}
                       <td className="p-4">
@@ -241,7 +239,7 @@ const BookingList = () => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   
   );
 };

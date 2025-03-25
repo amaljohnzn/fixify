@@ -38,7 +38,7 @@ const Revenue = () => {
   return (
 
 
-    <>
+    <div className="pt-14">
     {/* Hero Section */}
 <section className="relative h-[500px] overflow-hidden">
   <img
@@ -95,7 +95,7 @@ const Revenue = () => {
         </BarChart>
       </ResponsiveContainer>
     </div>
-    </>
+    </div>
   
   );
 };

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import background from "./img/signup.png";
 import logo from "./img/logo.png";
+import { Link } from "react-router-dom";
+
 
 const API_URL = import.meta.env.VITE_SERVER_URI;
 
@@ -84,6 +86,12 @@ const Register = () => {
             Sign Up
           </button>
         </form>
+        <p className="py-4">
+        Already have an account?{" "}
+        <Link to="/signin" className="text-blue-500 underline">
+          Sign In
+        </Link>
+      </p>
       </div>
     </div>
   );

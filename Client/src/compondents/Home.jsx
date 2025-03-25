@@ -9,30 +9,11 @@ const Home = () => {
   const handleNavigate = () => {
     navigate("/service");
   };
-  const services = [
-    {
-      name: "Plumbing",
-      image: "https://res.cloudinary.com/dandjcp0x/image/upload/v1741586056/plumbing_dux8xj.jpg",
-
-      description: "High-quality plumbing services for your needs.",
-    },
-    {
-      name: "Electrical",
-      image: "https://res.cloudinary.com/dandjcp0x/image/upload/v1741585910/male-electrician-works-switchboard-with-electrical-connecting-cable_g1yko2.jpg",
-      description: "Expert electrical services to keep you powered.",
-    },
-    {
-      name: "Painting",
-      image: "https://res.cloudinary.com/dandjcp0x/image/upload/v1741586017/paint_lgeata.jpg",
-
-      description: "Custom Painting solutions for your home.",
-    },
-  ];
-
+ 
   return (
-    <div >
+    <div  className="pt-14">
       {/* Hero Section */}
-      <section className="relative h-[500px] overflow-hidden">
+      <section className="relative h-[700px] overflow-hidden">
         <img
           src="https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg"
           alt="Hero"
@@ -47,47 +28,11 @@ const Home = () => {
         </div>
       </section>
 
-       {/* Our Services */}
-       <section className="py-16">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-black mb-6">Our Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
-            {/* Render Services */}
-            {services.map((service) => (
-              <div key={service.name} className="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
-                <div className="flex justify-center mb-4">
-                  <img src={service.image} alt={service.name} className="h-16 w-16 object-cover rounded-full" />
-                </div>
-                <h3 className="text-lg font-semibold text-black">{service.name}</h3>
-                <p className="text-gray-600">{service.description}</p>
-              </div>
-            ))}
-
-            {/* "Explore More" Card */}
-            <div className="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
-              <div className="flex justify-center mb-4">
-                <img 
-                  src="https://res.cloudinary.com/dandjcp0x/image/upload/v1741587051/low-angle-people-working-with-drill_sezaqq.jpg" 
-                  alt="More Services" 
-                  className="h-16 w-16 object-cover rounded-full" 
-                />
-              </div>
-              <h3 className="text-lg font-semibold text-black">More</h3>
-              <p className="text-gray-600">Explore all professional services...</p>
-              <button 
-                onClick={handleNavigate}
-                className="mt-4 border border-black text-black px-4 py-2 rounded"
-              >
-                Explore More
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+     
     {/* Why Choose Us */}
 <section className="py-16 bg--100">
   <div className="container mx-auto text-center">
-    <h2 className="text-3xl font-bold text-black mb-6">Why Choose Us</h2>
+    <h2 className="text-3xl font-bold  mb-6">Why Choose Us</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
       {[
         {
@@ -113,8 +58,8 @@ const Home = () => {
       ].map((item) => (
         <div key={item.name} className="text-center">
           <img src={item.image} alt={item.name} className="h-16 w-16 object-cover rounded-full mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-black">{item.name}</h3>
-          <p className="text-gray-600">{item.description}</p>
+          <h3 className="text-lg font-semibold ">{item.name}</h3>
+          <p className="text-600">{item.description}</p>
         </div>
       ))}
     </div>
@@ -125,15 +70,15 @@ const Home = () => {
       {/* How It Works */}
       <section className="py-16">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-black mb-6">How It Works</h2>
+          <h2 className="text-3xl font-bold  mb-6">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
             {["Book Online", "Choose Service", "Get Quote", "Service Delivery"].map((step, index) => (
               <div key={step} className="text-center">
                 <div className="h-12 w-12 bg-black text-white flex items-center justify-center rounded-full mx-auto mb-4">
                   {index + 1}
                 </div>
-                <h3 className="text-lg font-semibold text-black">{step}</h3>
-                <p className="text-gray-600">Step {index + 1} of our seamless service process.</p>
+                <h3 className="text-lg font-semibold ">{step}</h3>
+                <p className="text-600">Step {index + 1} of our seamless service process.</p>
               </div>
             ))}
           </div>

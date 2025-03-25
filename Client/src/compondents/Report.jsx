@@ -30,7 +30,7 @@ const Report = () => {
   return (
     <>
      {/* Hero Section */}
-     <section className="relative h-[500px] overflow-hidden">
+     <section className="relative h-[500px] overflow-hidden pt-14">
       <img
         src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1920&amp;q=80"
 
@@ -45,11 +45,11 @@ const Report = () => {
         </div>
       </div>
     </section>
+<br />
 
-
-    <div className="p-10 max-w-7xl mx-auto bg-gradient-to-b from-gray-50 to-gray-100 min-h-screen">
+    <div className="p-10 max-w-7xl mx-auto min-h-screen  ">
       
-      <h1 className="text-4xl font-bold text-gray-900 text-center mb-12 tracking-tight">
+      <h1 className="text-4xl font-bold  text-center mb-12 tracking-tight">
         Admin Report Dashboard
       </h1>
 
@@ -65,17 +65,17 @@ const Report = () => {
         ].map((item, index) => (
           <div
             key={index}
-            className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            className="p-6  rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
           >
-            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">{item.label}</h2>
-            <p className="text-3xl font-extrabold text-gray-900 mt-3">{item.value}</p>
+            <h2 className="text-sm font-semibold  uppercase tracking-wider">{item.label}</h2>
+            <p className="text-3xl font-extrabold  mt-3">{item.value}</p>
           </div>
         ))}
       </div>
 
       {/* Top Providers Table */}
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Top Providers</h2>
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-12 overflow-hidden">
+      <h2 className="text-2xl font-bold  mb-6 tracking-tight">Top Providers</h2>
+      <div className=" rounded-2xl shadow-lg border border-gray-100 p-6 mb-12 overflow-hidden">
         <table className="w-full text-left">
           <thead>
             <tr className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-sm font-semibold uppercase tracking-wider">
@@ -87,10 +87,10 @@ const Report = () => {
             {report.topProviders.map((provider) => (
               <tr
                 key={provider._id}
-                className="border-t border-gray-100 hover:bg-gray-50 transition-colors duration-150"
+                className="border-t border-gray-100  transition-colors duration-150"
               >
-                <td className="py-4 px-6 text-gray-800">{provider.name}</td>
-                <td className="py-4 px-6 text-gray-800 font-medium">₹{provider.totalEarnings.toFixed(2)}</td>
+                <td className="py-4 px-6 ">{provider.name}</td>
+                <td className="py-4 px-6  font-medium">₹{provider.totalEarnings.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
@@ -98,35 +98,39 @@ const Report = () => {
       </div>
 
       {/* Top Services */}
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Most Requested Services</h2>
-      <ul className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-12">
+      <h2 className="text-2xl font-bold  mb-6 tracking-tight">Most Requested Services</h2>
+      <ul className="rounded-2xl shadow-lg border border-gray-100 p-6 mb-12">
         {report.topServices.map((service) => (
           <li
             key={service._id}
-            className="py-4 text-gray-800 border-b border-gray-100 last:border-none flex justify-between items-center"
+            className="py-4  border-b border-gray-100 last:border-none flex justify-between items-center"
           >
             <span className="font-medium">{service._id}</span>
-            <span className="text-sm font-semibold text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+            <span className="text-sm font-semibold   px-3 py-1 rounded-full">
               {service.count} requests
             </span>
           </li>
         ))}
       </ul>
+      <br /> <br />
+
+    
+  
 
       {/* Overall Rating */}
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Average Provider Rating</h2>
-      <p className="text-4xl font-extrabold text-gray-900 mb-12 flex items-center justify-center">
+      <h2 className="text-2xl font-bold  mb-6 tracking-tight ">Average Provider Rating</h2>
+      <p className="text-4xl font-extrabold  mb-12 flex items-center justify-center">
         <span className="text-yellow-500 mr-2">⭐</span> {report.avgRating}
       </p>
-
+<br /><br />
       {/* Provider Ratings Table */}
       {report.providerRatings && report.providerRatings.length > 0 && (
         <>
           <h2 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Provider Ratings</h2>
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+          <div className=" rounded-2xl shadow-lg border border-gray-100 p-6">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-sm font-semibold uppercase tracking-wider">
+                <tr className="  bg-gray-300 text-black text-sm font-semibold uppercase tracking-wider">
                   <th className="py-4 px-6">Name</th>
                   <th className="py-4 px-6">Average Rating</th>
                 </tr>
@@ -135,10 +139,10 @@ const Report = () => {
                 {report.providerRatings.map((provider) => (
                   <tr
                     key={provider._id}
-                    className="border-t border-gray-100 hover:bg-gray-50 transition-colors duration-150"
+                    className="border-t border-gray-100  transition-colors duration-150"
                   >
-                    <td className="py-4 px-6 text-gray-800">{provider.name}</td>
-                    <td className="py-4 px-6 text-gray-800 font-medium">
+                    <td className="py-4 px-6 ">{provider.name}</td>
+                    <td className="py-4 px-6  font-medium">
                       <span className="text-yellow-500 mr-1">⭐</span> {provider.avgRating}
                     </td>
                   </tr>
