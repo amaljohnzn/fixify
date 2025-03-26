@@ -25,7 +25,6 @@ const transporter = nodemailer.createTransport({
 const tempUsers = {}; // Temporary storage for users awaiting OTP verification
 
 const requestOTP = asyncHandler(async (req, res) => {
-  console.log("🔹 Received OTP request", req.body); 
 
   const { name, email, phone, password, address } = req.body;  // Accept extra details
 
@@ -52,13 +51,13 @@ const requestOTP = asyncHandler(async (req, res) => {
       text: `Your OTP is: ${otp}`,  
     });
 
-    console.log("✅ OTP sent successfully");
     res.status(200).json({ message: "OTP sent to email." });
   } catch (error) {
     console.error("❌ Email sending failed:", error);
     return res.status(500).json({ message: "Failed to send OTP" });
   }
 });
+
 
 
 
