@@ -88,8 +88,9 @@ export default function RegisterProvider() {
   };
 
   return (
-    <main
-      className="pt-20 min-h-screen flex items-center justify-center bg-gray-50 relative"
+   <div className="pt-12">
+     <main
+      className="pt-10 pb-4 min-h-screen flex items-center justify-center bg-gray-50 relative text-black "
       style={{
         backgroundImage: `url('https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&q=80')`,
         backgroundSize: "cover",
@@ -97,7 +98,7 @@ export default function RegisterProvider() {
       }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="max-w-3xl w-full space-y-8 bg-white p-8 rounded-lg shadow-sm relative z-10">
+      <div className="max-w-3xl w-full space-y-2 bg-white p-4 rounded-lg shadow-sm relative z-10">
         <div className="text-center">
           <img src={FixifyLogo} alt="Fixify Logo" className="mx-auto w-20 h-20" />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Service Provider Sign Up</h2>
@@ -111,7 +112,7 @@ export default function RegisterProvider() {
           </div>
         )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-8 space-y-2" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Full Name</label>
@@ -209,5 +210,6 @@ export default function RegisterProvider() {
       </p>
       </div>
     </main>
+   </div>
   );
 }

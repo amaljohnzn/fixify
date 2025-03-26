@@ -22,7 +22,7 @@ const ChooseRegister = () => {
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
 
       {/* Main Card */}
-      <div className=" bg-gray-100 p-4 rounded shadow-lg text-center relative" style={{ width: "380px" }}>
+      <div className=" border-2 border-white  bg-gray-100 text-black p-4 rounded shadow-lg text-center relative" style={{ width: "380px" }}>
         
         {/* Logo */}
         <img 

@@ -42,8 +42,8 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100" style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?construction,tools')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md backdrop-blur-lg">
+    <div className="min-h-screen flex items-center justify-center " style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?construction,tools')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className=" shadow-lg rounded-lg p-8 w-full max-w-md backdrop-blur-lg">
         <div className="flex flex-col items-center mb-4">
           <img src={FixifyLogo} alt="Fixify Logo" className="w-20" />
         </div>
@@ -81,7 +81,7 @@ const RegisterPage = () => {
               <label className="block text-sm font-medium">Enter OTP</label>
               <input name="otp" value={formData.otp} onChange={handleChange} placeholder="Enter OTP sent to email" className="w-full p-3 border rounded-lg" required />
             </div>
-            <button type="submit" className="w-full bg-green-600 text-white p-3 rounded-lg font-semibold hover:bg-black-700 transition duration-200">
+            <button type="submit" className="w-full bg-gray-600 text-white p-3 rounded-lg font-semibold hover:bg-black-700 transition duration-200">
               Verify OTP
             </button>
           </form>
