@@ -5,40 +5,101 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 //const cloudinary = require("../Config/cloudinary"); 
 const cloudinary = require("cloudinary").v2;
-
+const nodemailer = require("nodemailer");
 // Generate JWT Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
-//  Register a new client
-const registerClient = asyncHandler(async (req, res) => {
-  const { name, email, password, phone, address } = req.body;
+
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+const tempUsers = {}; // Temporary storage for users awaiting OTP verification
+
+const requestOTP = asyncHandler(async (req, res) => {
+  console.log("🔹 Received OTP request", req.body); 
+
+  const { name, email, phone, password, address } = req.body;  // Accept extra details
+
+  if (!email || !name || !phone || !password || !address) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
   const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(400);
-    throw new Error("User already exists");
+    return res.status(400).json({ message: "User already exists" });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const otp = generateOTP();
+  const hashedOTP = await bcrypt.hash(otp, 10); // Securely hash the OTP
 
+  // ✅ Store user data temporarily
+  tempUsers[email] = { name, email, phone, password, address, hashedOTP };
+
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Your OTP for Fixify Registration",
+      text: `Your OTP is: ${otp}`,  
+    });
+
+    console.log("✅ OTP sent successfully");
+    res.status(200).json({ message: "OTP sent to email." });
+  } catch (error) {
+    console.error("❌ Email sending failed:", error);
+    return res.status(500).json({ message: "Failed to send OTP" });
+  }
+});
+
+
+
+const verifyOTP = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!tempUsers[email]) {
+    return res.status(400).json({ message: "No OTP request found. Please request OTP first." });
+  }
+
+  const tempUser = tempUsers[email];
+
+  // Verify OTP
+  const isMatch = await bcrypt.compare(otp, tempUser.hashedOTP);
+  if (!isMatch) {
+    return res.status(400).json({ message: "Invalid OTP" });
+  }
+
+  // 🔥 Ensure password is defined before hashing
+  if (!tempUser.password) {
+    return res.status(400).json({ message: "No password found. Please restart the registration process." });
+  }
+
+  // Hash password before storing user
+  const hashedPassword = await bcrypt.hash(tempUser.password, 10);
+
+  // Create user in the database
   const user = await User.create({
-    name,
+    name: tempUser.name,
     email,
     password: hashedPassword,
-    phone,
-    address,
+    phone: tempUser.phone,
+    address: tempUser.address,
     role: "client",
+    isVerified: true,
   });
 
-  res.status(201).json({
-    message: "client registered",
-    _id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-  });
+  // Remove tempUser from storage after verification
+  delete tempUsers[email];
+
+  res.status(201).json({ message: "Account verified and registered successfully.", user });
 });
 
 
@@ -307,12 +368,13 @@ const updatePassword = asyncHandler(async (req, res) => {
 
 
 module.exports = {
-  registerClient,
+  //registerClient,
+
   registerProvider,
   registerAdmin,
   loginUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
-  updatePassword
+  updatePassword,requestOTP, verifyOTP
 };

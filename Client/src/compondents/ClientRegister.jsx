@@ -1,100 +1,95 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
-import background from "./img/signup.png";
-import logo from "./img/logo.png";
-import { Link } from "react-router-dom";
-
+import FixifyLogo from "./img/logo.png";
 
 const API_URL = import.meta.env.VITE_SERVER_URI;
 
-const Register = () => {
-  const navigate = useNavigate();
-
+const RegisterPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: "",
     phone: "",
+    password: "",
     address: "",
+    otp: "",
   });
-
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [step, setStep] = useState(1);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const requestOTP = async (e) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
-
-    console.log("Submitting form data:", formData);
-    console.log("API URL:", API_URL);
-
     try {
-      const res = await axios.post(`${API_URL}/users/register/client`, formData);
-      setMessage(res.data.message);
-
-      setTimeout(() => {
-        navigate("/signIn");
-      }, 2000);
+      await axios.post(`${API_URL}/users/request-otp`, formData, { withCredentials: true });
+      alert("OTP sent to your email");
+      setStep(2);
     } catch (error) {
-      setError(error.response?.data?.message || "Registration failed");
+      alert(error.response?.data?.message || "OTP request failed");
+    }
+  };
+
+  const verifyOTP = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API_URL}/users/verify-otp`, { email: formData.email, otp: formData.otp }, { withCredentials: true });
+      alert("Account registered successfully!");
+      window.location.href = "/signin";
+    } catch (error) {
+      alert(error.response?.data?.message || "OTP verification failed");
     }
   };
 
   return (
-    <div
-    
-      className="flex justify-center items-center min-h-screen bg-cover bg-center mt-8"
-      style={{ backgroundImage: `url(${background})` }}
-    >
-      <div className="w-96 bg-white p-4 rounded-lg shadow-lg text-center">
-        {/* Logo */}
-        <img src={logo} alt="Fixify Logo" className="w-20 mb-1 mx-auto" />
-
-        <h3 className="text-black mb-1 text-xl font-semibold">Sign Up</h3>
-        <p className="text-gray-600 mb-3">Join our community today</p>
-
-        {message && <div className="bg-green-100 text-green-800 p-2 rounded mb-1">{message}</div>}
-        {error && <div className="bg-red-100 text-red-800 p-1 rounded mb-1">{error}</div>}
-
-        <form onSubmit={handleSubmit}>
-          {[
-            { label: "Full Name", name: "name", type: "text", placeholder: "Enter your full name" },
-            { label: "Mobile Number", name: "phone", type: "text", placeholder: "Enter your mobile number" },
-            { label: "Email", name: "email", type: "email", placeholder: "Enter your email" },
-            { label: "Password", name: "password", type: "password", placeholder: "Create a password" },
-            { label: "Location", name: "address", type: "text", placeholder: "Enter your location" },
-          ].map(({ label, name, type, placeholder }) => (
-            <div key={name} className="mb-3 text-left">
-              <label className="block text-black font-medium mb-1">{label}</label>
-              <input
-                type={type}
-                name={name}
-                placeholder={placeholder}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
+    <div className="min-h-screen flex items-center justify-center bg-gray-100" style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?construction,tools')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md backdrop-blur-lg">
+        <div className="flex flex-col items-center mb-4">
+          <img src={FixifyLogo} alt="Fixify Logo" className="w-20" />
+        </div>
+        <h2 className="text-2xl font-semibold text-center mb-2">Sign Up</h2>
+        <p className="text-gray-500 text-center mb-4">Join our community today</p>
+        {step === 1 ? (
+          <form onSubmit={requestOTP} className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium">Full Name</label>
+              <input name="name" value={formData.name} onChange={handleChange} placeholder="Enter your full name" className="w-full p-3 border rounded-lg" required />
             </div>
-          ))}
-          <button type="submit" className="w-full bg-black text-white py-2 font-bold rounded hover:bg-gray-800 transition">
-            Sign Up
-          </button>
-        </form>
-        <p className="py-4">
-        Already have an account?{" "}
-        <Link to="/signin" className="text-blue-500 underline">
-          Sign In
-        </Link>
-      </p>
+            <div>
+              <label className="block text-sm font-medium">Mobile Number</label>
+              <input name="phone" value={formData.phone} onChange={handleChange} placeholder="Enter your mobile number" className="w-full p-3 border rounded-lg" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Email</label>
+              <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter your email" className="w-full p-3 border rounded-lg" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Password</label>
+              <input name="password" type="password" value={formData.password} onChange={handleChange} placeholder="Create a password" className="w-full p-3 border rounded-lg" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Location</label>
+              <input name="address" value={formData.address} onChange={handleChange} placeholder="Enter your location" className="w-full p-3 border rounded-lg" required />
+            </div>
+            <button type="submit" className="w-full bg-black text-white p-3 rounded-lg font-semibold hover:bg-gray-800 transition duration-200">
+              Sign Up
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={verifyOTP} className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium">Enter OTP</label>
+              <input name="otp" value={formData.otp} onChange={handleChange} placeholder="Enter OTP sent to email" className="w-full p-3 border rounded-lg" required />
+            </div>
+            <button type="submit" className="w-full bg-green-600 text-white p-3 rounded-lg font-semibold hover:bg-black-700 transition duration-200">
+              Verify OTP
+            </button>
+          </form>
+        )}
+        <p className="text-center mt-4">Already have an account? <a href="/signin" className="text-blue-600 hover:underline">Sign In</a></p>
       </div>
     </div>
   );
 };
 
-export default Register;
+export default RegisterPage;
