@@ -31,7 +31,7 @@ const ContactUs = () => {
 
   return (
     
-    <main className="pt-14">
+    <main>
        <section className="relative h-[500px] bg--900">
         <div className="absolute inset-0">
           <img

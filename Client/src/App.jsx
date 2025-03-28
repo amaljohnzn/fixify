@@ -31,10 +31,10 @@ import BookingList from "./compondents/BookingList"
 function App() {
   return (
     <>
-    <Router>
-    <div  className="bg-base-100 text-base-content min-h-screen">
-     <Navbar/> 
-     <main>
+   <Router>
+      <div className="bg-base-100 text-base-content min-h-screen">
+        <Navbar className="fixed top-0 left-0 w-full z-50" />  
+     <main className="pt-14">
      <Routes>
           <Route path="/signup" element={<ChooseRegister />} />
           <Route path="/clientRegister" element={<ClientRegister/>} />

@@ -38,7 +38,7 @@ const Revenue = () => {
   return (
 
 
-    <div className="pt-14">
+    <div >
     {/* Hero Section */}
 <section className="relative h-[500px] overflow-hidden">
   <img

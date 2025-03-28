@@ -47,6 +47,8 @@ const verifyProvider = asyncHandler(async (req, res) => {
   });
   
 
+
+  
   const getAllBookings = asyncHandler(async (req, res) => {
     try {
       const { status } = req.query;

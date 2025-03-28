@@ -136,7 +136,7 @@ const ServicesPage = () => {
                       <p className="text-gray-500 text-sm">{service.role}</p>
                       {/* Rating */}
                       <div className="flex items-center text-yellow-500 text-xs">
-                        {"★★★★★"} <span className="ml-1 text-gray-600">(5)</span>
+                        {"★★★★★"} <span className="ml-1 text-gray-600">(5★)</span>
                       </div>
                     </div>
                   </div>

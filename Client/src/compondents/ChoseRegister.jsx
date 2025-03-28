@@ -9,7 +9,7 @@ const ChooseRegister = () => {
   const navigate = useNavigate();
   
   return (
-   <div className="pt-12">
+   <div>
      <div 
       className="vh-100 d-flex align-items-center justify-content-center position-relative " 
       style={{

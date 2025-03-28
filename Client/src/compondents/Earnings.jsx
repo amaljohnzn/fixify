@@ -57,7 +57,7 @@ const Earnings = () => {
     };
 
     return (
-        <div className="pt-14">
+        <div >
          {/* Hero Section */}
     <section className="relative h-[400px] overflow-hidden">
       <img

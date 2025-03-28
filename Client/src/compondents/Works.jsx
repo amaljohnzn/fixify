@@ -84,7 +84,7 @@ const Works = () => {
   };
 
   return (
-   <div className="pt-14">
+   <div >
      
       <section className="relative h-[500px] overflow-hidden">
         <img

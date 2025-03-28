@@ -11,7 +11,7 @@ const Home = () => {
   };
  
   return (
-    <div  className="pt-14">
+    <div>
       {/* Hero Section */}
       <section className="relative h-[700px] overflow-hidden">
         <img

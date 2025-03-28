@@ -88,7 +88,7 @@ export default function RegisterProvider() {
   };
 
   return (
-   <div className="pt-12">
+   <div >
      <main
       className="pt-10 pb-4 min-h-screen flex items-center justify-center bg-gray-50 relative text-black "
       style={{

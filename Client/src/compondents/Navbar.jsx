@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <header className=" shadow-sm fixed w-full z-50">
-      <nav className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-400 ">
         <div className="flex justify-between items-center h-14">
           {/* Logo on the left */}
           <div className="flex items-center">
@@ -26,16 +26,14 @@ const Navbar = () => {
           {/* Navigation Links & Icons on the right */}
           <div className="flex items-center space-x-6 ">
             {/* Navigation Links */}
-            <div className="hidden md:flex space-S-1">
-            <Darkmode />
-            <Link to="/" className="btn">
-  Home
-</Link>
+            <div className="hidden md:flex space-S-1 ">
 
-              <Link to="/about" className="btn btn-ghost normal-case">
+              <Link to="/" className="btn  ">  Home</Link>
+
+              <Link to="/about" className="btn btn-ghost normal-case ">
                 About
               </Link>
-              <Link to="/contact" className="btn btn-ghost normal-case">
+              <Link to="/contact" className=" btn btn-ghost normal-case">
                 Contact
               </Link>
 
@@ -47,6 +45,33 @@ const Navbar = () => {
                   <Link to="/signup" className="btn btn-ghost normal-case">
                     Sign Up
                   </Link>
+
+                  <div className="flex items-center space-x-4">
+                {/* Profile Icon with Dropdown */}
+                <div className="dropdown dropdown-end ">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-ghost btn-circle avatar"
+                  >
+                    <div className="w-9 rounded-full">
+                      <img
+                        alt="User Profile"
+                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                      />
+                    </div>
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-sm dropdown-content  rounded-box shadow mt-3 w-52 p-2 bg-gray-400"
+                  >
+                   
+
+                    <Darkmode />
+                   
+                  </ul>
+                </div>
+              </div>
                 </>
               )}
 
@@ -73,7 +98,6 @@ const Navbar = () => {
 
               {role === "provider" && (
                 <>
-                  
                   <Link
                     to="/providerBooking"
                     className="btn btn-ghost normal-case"
@@ -91,8 +115,10 @@ const Navbar = () => {
 
               {role === "client" && (
                 <>
-                  <Link to="/bookingStatus"
-                    className="btn btn-ghost normal-case" >
+                  <Link
+                    to="/bookingStatus"
+                    className="btn btn-ghost normal-case"
+                  >
                     Booking Status
                   </Link>
                   <Link to="/service" className="btn btn-ghost normal-case">
@@ -105,8 +131,6 @@ const Navbar = () => {
             {/* Notification & Profile Section */}
             {role && (
               <div className="flex items-center space-x-4">
-               
-
                 {/* Profile Icon with Dropdown */}
                 <div className="dropdown dropdown-end">
                   <div
@@ -126,19 +150,20 @@ const Navbar = () => {
                     className="menu menu-sm dropdown-content  rounded-box shadow mt-3 w-52 p-2"
                   >
                     <li>
-                      <Link to="/profile" className="btn btn-ghost normal-case">
-                      👤 Profile
+                      <Link
+                        to="/profile"
+                        className="btn btn-ghost normal-case "
+                      >
+                        👤 Profile
                       </Link>
                     </li>
-                    
 
+                    <Darkmode />
                     <li>
                       <Link to="logout" className="btn btn-ghost normal-case">
-                      ↪ Logout
+                        ↪ Logout
                       </Link>
                     </li>
-
-                   
                   </ul>
                 </div>
               </div>

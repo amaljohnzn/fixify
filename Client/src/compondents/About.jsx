@@ -11,7 +11,7 @@ const About = () => {
   return (
     <main className="pt-18 font-[Poppins]">
       {/* Who We Are */}
-      <section className="py-16">
+      <section className="">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl font-bold mb-6">Who We Are</h2>

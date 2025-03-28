@@ -30,7 +30,7 @@ const Report = () => {
   return (
     <>
      {/* Hero Section */}
-     <section className="relative h-[500px] overflow-hidden pt-14">
+     <section className="relative h-[500px] overflow-hidden ">
       <img
         src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1920&amp;q=80"
 

@@ -80,7 +80,7 @@ const ServiceManagement = () => {
 
   return (
     
-    <div className=" min-h-screen pt-14">
+    <div className=" min-h-screen ">
       
     {/* Hero Section */}
     <section className="relative h-[500px] overflow-hidden">
