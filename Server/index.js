@@ -41,10 +41,11 @@ app.use("/contact", contactRoutes);
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
-app.use((req, res, next) => {
-  console.log(`Incoming request: ${req.method} ${req.url}`);
-  next();
-});
+
+//app.use((req, res, next) => {
+  //console.log(`Incoming request: ${req.method} ${req.url}`);
+  //1next();
+//});
 
 
 const PORT = process.env.PORT || 5000;

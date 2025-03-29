@@ -76,8 +76,10 @@ const Works = () => {
       }
 
       toast.success("Service request completed successfully.");
+      window.location.reload();
     } catch (error) {
       toast.error("Failed to complete request.");
+      
     } finally {
       setCompleting(false);
     }

@@ -58,10 +58,11 @@ const getPendingRequests = asyncHandler(async (req, res) => {
                 _id: request.client._id,
                 name: request.client.name,
                 phone: request.client.phone,
-                location: request.client.location
+                
             }
             : null,
         serviceName: request.serviceName,
+        location: request.location,
         status: request.status,
         createdAt: request.createdAt,
     }));

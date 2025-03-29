@@ -20,6 +20,7 @@ const ProviderBooking = () => {
         { withCredentials: true }
       );
       setPendingRequests(response.data);
+      console.log(response)
     } catch (error) {
       console.error("Error fetching pending requests:", error);
     }
