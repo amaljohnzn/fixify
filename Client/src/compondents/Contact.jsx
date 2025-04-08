@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import contactimg from "./img/contact.jpg"; 
+import { toast } from 'react-hot-toast';
+
 
 const API_URL = import.meta.env.VITE_SERVER_URI;
 
@@ -20,14 +22,16 @@ const ContactUs = () => {
       await axios.post(`${API_URL}/contact`, formData);
       setSuccess("Your message has been sent successfully!");
       setFormData({ name: "", email: "", phone: "", message: "" });
-      window.alert("Message sent successfully!");
-
+      toast.success("Message sent successfully!");
     } catch (error) {
       setSuccess("Failed to send message. Try again later.");
+      toast.error("Failed to send message. Try again later.");
     } finally {
       setLoading(false);
     }
   };
+  
+  
 
   return (
     

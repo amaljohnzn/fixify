@@ -1,7 +1,7 @@
 
 import React from "react";
 //import './App.css'
-
+import { Toaster } from "react-hot-toast";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChooseRegister from "./compondents/ChoseRegister";
 import ClientRegister from "./compondents/ClientRegister";
@@ -31,6 +31,7 @@ import BookingList from "./compondents/BookingList"
 function App() {
   return (
     <>
+    <Toaster position="top-right" reverseOrder={false} /> 
    <Router>
       <div className="bg-base-100 text-base-content min-h-screen">
         <Navbar className="fixed top-0 left-0 w-full z-50" />  

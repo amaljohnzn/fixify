@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <header className=" shadow-sm fixed w-full z-50">
-      <nav className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-400 ">
+      <nav className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-300 ">
         <div className="flex justify-between items-center h-14">
           {/* Logo on the left */}
           <div className="flex items-center">
