@@ -1,7 +1,7 @@
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
-require("dotenv").config(); // Ensure you load env variables
+require("dotenv").config(); 
 
 // Configure Cloudinary
 cloudinary.config({
@@ -12,9 +12,9 @@ cloudinary.config({
 
 // Configure Multer Storage for Cloudinary
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary, // Pass the configured Cloudinary instance
+  cloudinary: cloudinary, 
   params: {
-    folder: "uploads", // Cloudinary folder
+    folder: "uploads", // folder
     allowed_formats: ["jpg", "png", "jpeg", "pdf"],
   },
 });
